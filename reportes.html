@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Servicios - SOFTEC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e3a8a;
+        }
+
+        .btn {
+            background: #2563eb;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background: #1e40af;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f9fafb;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Reporte de Servicios Técnicos</h1>
+
+        <button class="btn" onclick="window.print()">🖨 Generar Reporte PDF</button>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Equipo</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>Nayareth</td>
+                <td>Laptop HP</td>
+                <td>Reparado</td>
+                <td>11/04/2026</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Carlos</td>
+                <td>Impresora Epson</td>
+                <td>En proceso</td>
+                <td>10/04/2026</td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+
+</html>

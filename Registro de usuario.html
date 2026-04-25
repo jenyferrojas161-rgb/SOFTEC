@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario - SOFTEC</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .register-box {
+            width: 500px;
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+            border-top: 8px solid #e53935;
+            text-align: center;
+        }
+
+        h1 {
+            color: #0b1f3a;
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            color: #e53935;
+            margin-bottom: 25px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            background: #0b1f3a;
+        }
+
+        .btn:hover {
+            background: #e53935;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="register-box">
+        <h1>SOFTEC</h1>
+        <h2>Registro de Usuario</h2>
+
+        <form>
+            <input type="text" placeholder="Nombre" required>
+            <input type="text" placeholder="Apellido" required>
+            <input type="number" placeholder="Documento" required>
+            <input type="tel" placeholder="Teléfono" required>
+            <input type="email" placeholder="Correo electrónico" required>
+            <input type="text" placeholder="Dirección" required>
+
+            <select required>
+                <option value="">Seleccione su rol</option>
+                <option value="cliente">Cliente</option>
+                <option value="tecnico">Técnico</option>
+                <option value="admin">Administrador</option>
+            </select>
+
+            <input type="text" placeholder="Usuario" required>
+            <input type="password" placeholder="Contraseña" required>
+
+            <button type="submit" class="btn">Registrarse</button>
+
+        </form>
+        <a href="index.html" class="back-link">← Volver al inicio</a>
+    </div>
+</body>
+
+</html>

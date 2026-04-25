@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración - SOFTEC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .contenedor {
+            max-width: 850px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #0b1f3a;
+            margin-bottom: 30px;
+        }
+
+        .grupo {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: none;
+        }
+
+        .botones {
+            margin-top: 25px;
+            text-align: right;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .guardar {
+            background: #0b1f3a;
+            color: white;
+        }
+
+        .cancelar {
+            background: #e53935;
+        }
+
+        .volver {
+            background: #e53935;
+            color: white;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .volver:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="contenedor">
+        <h1>⚙ Configuración del Software de Servicio Técnico</h1>
+
+        <div class="grupo">
+            <label>Nombre del software</label>
+            <input type="text" placeholder="SOFTEC">
+        </div>
+
+        <div class="grupo">
+            <label>Correo de soporte</label>
+            <input type="email" placeholder="soporte@softec.com">
+        </div>
+
+        <div class="grupo">
+            <label>Tiempo máximo de reparación (días)</label>
+            <input type="number" placeholder="5">
+        </div>
+
+        <div class="grupo">
+            <label>Notificaciones automáticas</label>
+            <select>
+                <option>Activadas</option>
+                <option>Desactivadas</option>
+            </select>
+        </div>
+
+        <div class="grupo">
+            <label>Subir logo del sistema</label>
+            <input type="file">
+        </div>
+
+        <div class="grupo">
+            <label>Modo del sistema</label>
+            <select>
+                <option>Claro</option>
+                <option>Oscuro</option>
+            </select>
+        </div>
+
+        <div class="grupo">
+            <label>Descripción del sistema</label>
+            <textarea rows="4" placeholder="Información del software"></textarea>
+        </div>
+
+        <div class="botones">
+            <button class="cancelar">Cancelar</button>
+            <button class="guardar">Guardar Configuración</button>
+        </div>
+        <li><a href="dashboard.html">Volver</a></li>
+    </div>
+</body>
+
+</html>
