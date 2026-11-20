@@ -1,0 +1,39 @@
+# Levanta PostgreSQL + backend SOFTEC.
+# Uso:  cp .env.example .env   (editar los valores)  y luego  docker compose up --build
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: softech_db
+      POSTGRES_USER: ${SOFTEC_DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${SOFTEC_DB_PASSWORD:?Define SOFTEC_DB_PASSWORD en el archivo .env}
+    volumes:
+      - softec_pgdata:/var/lib/postgresql/data
+      # Se ejecutan solo la primera vez, en este orden (por el prefijo numérico)
+      - ./sql/softech_database_postgres.sql:/docker-entrypoint-initdb.d/01_esquema.sql:ro
+      - ./sql/softech_security_upgrade.sql:/docker-entrypoint-initdb.d/02_seguridad_auditoria.sql:ro
+      - ./sql/softech_seed_data_30.sql:/docker-entrypoint-initdb.d/03_datos_demo.sql:ro
+      - ./sql/softech_fix_secuencias.sql:/docker-entrypoint-initdb.d/04_secuencias.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${SOFTEC_DB_USER:-postgres} -d softech_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SOFTEC_DB_URL: jdbc:postgresql://db:5432/softech_db
+      SOFTEC_DB_USER: ${SOFTEC_DB_USER:-postgres}
+      SOFTEC_DB_PASSWORD: ${SOFTEC_DB_PASSWORD}
+      SOFTEC_JWT_SECRET: ${SOFTEC_JWT_SECRET:?Define SOFTEC_JWT_SECRET en el archivo .env}
+      SOFTEC_CORS_ORIGINS: ${SOFTEC_CORS_ORIGINS:-http://localhost:5500,http://127.0.0.1:5500}
+    ports:
+      - "8081:8081"
+
+volumes:
+  softec_pgdata:

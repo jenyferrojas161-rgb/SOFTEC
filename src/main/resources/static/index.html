@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOFTEC</title>
+    <style>
+        .logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 120px;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            width: 500px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border-top: 8px solid #e53935;
+        }
+
+        h1 {
+            color: #0b1f3a;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #e53935;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .menu a {
+            display: block;
+            text-decoration: none;
+            background: #0b1f3a;
+            color: white;
+            padding: 14px;
+            margin: 12px 0;
+            border-radius: 10px;
+            border: 2px solid #e53935;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            transition: 0.3s;
+        }
+
+        .menu a:hover {
+            background: #e53935;
+            border-color: #0b1f3a;
+            transform: scale(1.03);
+        }
+
+        img {
+            background: url(logosoftec.jpg)no-repeat center;
+            width: 150px;
+
+
+        }
+
+        figcaption {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>SOFTEC</h1>
+            <h2>Software para la Gestión del Servicio Técnico</h2>
+            <p>Bienvenido al sistema, selecciona una opción para continuar</p>
+        </header>
+        <img src="logosoftec.jpg" alt="Logo del software">
+        <figcaption>Logo del software </figcaption>
+        <nav class="menu">
+            <a href="Registro de usuario.html">Registro de usuario</a>
+            <a href="login.html">Login</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="servicios.html">Módulo de Servicios</a>
+            <a href="facturacion.html">Módulo de Facturación</a>
+
+        </nav>
+    </div>
+
+</body>
+
+</html>
