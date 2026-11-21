@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOFTEC - Registro de usuario</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="nav.css" rel="stylesheet">
+    <link rel="icon" href="logo-softec.png">
+
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .register-box {
+            width: 520px;
+            max-width: 92vw;
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+            text-align: center;
+        }
+
+        .register-box h1 {
+            color: var(--softec-navy);
+            margin-bottom: 4px;
+            font-weight: 800;
+        }
+
+        .register-box h2 {
+            color: var(--softec-red);
+            margin-bottom: 22px;
+            font-size: 18px;
+        }
+
+        .register-box input,
+        .register-box select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #dfe3e8;
+            border-radius: 10px;
+            box-sizing: border-box;
+            transition: 0.2s;
+            font-size: 14px;
+        }
+
+        .register-box input:focus,
+        .register-box select:focus {
+            border: 2px solid var(--softec-teal);
+            outline: none;
+            box-shadow: 0 0 0 .2rem rgba(14, 165, 163, .18);
+        }
+
+        .register-box input.is-invalid {
+            border-color: var(--softec-red);
+        }
+        .register-box input.is-invalid:focus {
+            box-shadow: 0 0 0 .2rem rgba(229, 57, 53, .18);
+        }
+
+        .btn-register {
+            width: 100%;
+            padding: 13px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            background: var(--softec-navy);
+            transition: 0.2s;
+            font-size: 15px;
+        }
+
+        .btn-register:hover:not(:disabled) {
+            background: var(--softec-red);
+            transform: translateY(-2px);
+        }
+
+        .btn-register:disabled {
+            opacity: .7;
+        }
+
+        .back {
+            display: block;
+            margin-top: 15px;
+            color: var(--softec-red);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+
+        .form-title {
+            text-align: left;
+            margin-top: 12px;
+            margin-bottom: 6px;
+            color: var(--softec-navy);
+            font-weight: 700;
+            font-size: .88rem;
+            text-transform: none;
+        }
+
+        /* Campo de contraseña con botón para mostrar/ocultar */
+        .password-wrap {
+            position: relative;
+        }
+
+        .password-wrap input {
+            padding-right: 42px;
+        }
+
+        .toggle-pass {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 6px 8px;
+            line-height: 1;
+        }
+
+        /* Checklist de requisitos de contraseña, estilo SofiaPlus */
+        .password-requirements {
+            list-style: none;
+            margin: 2px 0 10px;
+            padding: 10px 12px;
+            text-align: left;
+            font-size: .78rem;
+            background: #f8f9fb;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+        }
+
+        .password-requirements li {
+            color: #b02a37;
+            padding: 2px 0 2px 22px;
+            position: relative;
+            transition: color .2s ease;
+        }
+
+        .password-requirements li::before {
+            content: "✖";
+            position: absolute;
+            left: 0;
+            top: 2px;
+            font-size: .72rem;
+        }
+
+        .password-requirements li.ok {
+            color: #1c7c33;
+        }
+
+        .password-requirements li.ok::before {
+            content: "✔";
+        }
+
+        /* Mensaje de coincidencia entre contraseña y confirmación */
+        .match-msg {
+            text-align: left;
+            font-size: .78rem;
+            font-weight: 600;
+            min-height: 18px;
+            margin: -2px 0 4px;
+            padding-left: 2px;
+        }
+
+        .match-msg.ok { color: #1c7c33; }
+        .match-msg.bad { color: #b02a37; }
+
+        /* Etiquetas accesibles, ocultas visualmente (el placeholder sigue
+           siendo la referencia visual, pero cada campo queda ligado a
+           su <label> para lectores de pantalla). */
+        .sr-only {
+            position: absolute;
+            width: 1px; height: 1px;
+            padding: 0; margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Texto de ayuda/error por campo (documento, teléfono, correo, usuario) */
+        .field-hint {
+            text-align: left;
+            font-size: .74rem;
+            font-weight: 600;
+            min-height: 16px;
+            margin: -4px 0 2px;
+            padding-left: 2px;
+            color: #b02a37;
+        }
+
+        .register-box select:invalid { color: #6c757d; }
+
+        .btn-register:disabled:hover {
+            background: var(--softec-navy);
+            transform: none;
+        }
+
+        /* Aviso de error del servidor (correo o documento ya registrados, etc.) */
+        .form-error {
+            margin: 14px 0 0;
+            padding: 12px 14px;
+            text-align: left;
+            font-size: .85rem;
+            line-height: 1.5;
+            color: #7f1d1d;
+            background: #fff1f0;
+            border: 1px solid #f5c2c7;
+            border-left: 4px solid var(--softec-red);
+            border-radius: 12px;
+        }
+        .form-error[hidden] { display: none; }
+        .form-error strong { display: block; color: #7a121b; margin-bottom: 2px; }
+        .form-error a { color: var(--softec-navy); font-weight: 700; margin-right: 12px; }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg softec-navbar">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand softec-brand" href="index.html">
+                <img src="logo-softec.png" alt="SOFTEC">
+                <span>SOFTEC</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#softecNav"
+                aria-controls="softecNav" aria-expanded="false" aria-label="Abrir menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="softecNav">
+                <ul class="navbar-nav mx-auto softec-links">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                    <span class="d-none d-lg-inline text-muted">¿Ya tienes cuenta?</span>
+                    <a href="login.html" class="btn softec-btn-outline">Ingresar</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="softec-center-wrap">
+        <div class="register-box">
+
+            <h1>SOFTEC</h1>
+            <h2>Crear una cuenta nueva</h2>
+
+            <form id="formRegistro">
+
+                <div class="form-title">Datos personales</div>
+
+                <label class="sr-only" for="documento">Documento de identidad</label>
+                <input type="text" id="documento" inputmode="numeric" pattern="[0-9]{6,12}"
+                    maxlength="12" placeholder="Documento de identidad" autocomplete="off" required>
+                <div class="field-hint" id="documentoHint"></div>
+
+                <label class="sr-only" for="telefono">Teléfono de contacto</label>
+                <input type="tel" id="telefono" inputmode="numeric" pattern="[0-9]{7,10}"
+                    maxlength="10" placeholder="Teléfono de contacto" autocomplete="tel" required>
+                <div class="field-hint" id="telefonoHint"></div>
+
+                <label class="sr-only" for="correo">Correo electrónico</label>
+                <input type="email" id="correo" placeholder="Correo electrónico" autocomplete="email" required>
+                <div class="field-hint" id="correoHint"></div>
+
+                <div class="form-title">Datos de acceso</div>
+
+                <!-- El registro público solo crea cuentas de Cliente. -->
+                <input type="hidden" id="rol" value="Cliente">
+                <div class="field-hint" style="display:block;color:#64748B;margin-bottom:12px">
+                    🔐 Este registro es para <strong>clientes</strong>. Las cuentas de técnico y administrador
+                    las crea la administración de SOFTEC.
+                </div>
+
+                <label class="sr-only" for="usuario">Nombre completo</label>
+                <input type="text" id="usuario" minlength="4" maxlength="30"
+                    placeholder="Nombre completo" autocomplete="name" required>
+                <div class="field-hint" id="usuarioHint"></div>
+
+                <div class="password-wrap">
+                    <label class="sr-only" for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="Contraseña"
+                        autocomplete="new-password" aria-describedby="passwordRequirements" required>
+                    <button type="button" class="toggle-pass" onclick="togglePassword('password', this)"
+                        aria-label="Mostrar contraseña">👁️</button>
+                </div>
+
+                <ul class="password-requirements" id="passwordRequirements">
+                    <li id="req-length">Mínimo 10 caracteres</li>
+                    <li id="req-letter">Al menos una minúscula</li>
+                    <li id="req-upper">Al menos una mayúscula</li>
+                    <li id="req-number">Al menos un número</li>
+                    <li id="req-special">Al menos un carácter especial (@ # $ % & * ...)</li>
+                </ul>
+
+                <div class="password-wrap">
+                    <label class="sr-only" for="password2">Confirmar contraseña</label>
+                    <input type="password" id="password2" placeholder="Confirmar contraseña"
+                        autocomplete="new-password" required>
+                    <button type="button" class="toggle-pass" onclick="togglePassword('password2', this)"
+                        aria-label="Mostrar contraseña">👁️</button>
+                </div>
+                <div id="matchMsg" class="match-msg" role="status" aria-live="polite"></div>
+
+                <div class="form-error" id="registroError" role="alert" hidden></div>
+
+                <button type="button" class="btn-register" id="btnRegistrar" onclick="registrar()" disabled>
+                    Crear mi cuenta
+                </button>
+
+            </form>
+
+            <a href="index.html" class="back">← Volver al inicio</a>
+
+        </div>
+    </div>
+
+    <footer class="softec-footer">
+        © 2026 SOFTEC - Todos los derechos reservados
+    </footer>
+
+    <script src="softec-env.js"></script>
+    <script src="api-config.js"></script>
+    <script src="softec-password.js"></script>
+    <script>
+        /* La validación de contraseña (checklist + coincidencia) vive ahora
+           en softec-password.js, compartida con recuperar-password.html.
+           Estos wrappers cortos conservan los nombres de función que ya
+           usaba el resto de este archivo (validarCampo, submit, etc.). */
+        function togglePassword(id, boton) { SoftecPassword.toggle(id, boton); }
+        function actualizarChecklistPassword() { return SoftecPassword.actualizarChecklist("password"); }
+        function actualizarCoincidencia() { return SoftecPassword.actualizarCoincidencia("password", "password2"); }
+
+        /* ---------- Validaciones de coherencia de los demás campos ----------
+           Cada campo se revisa en vivo y muestra su mensaje de error debajo,
+           igual que el checklist de la contraseña. */
+        const HINTS = {
+            documento: { el: document.getElementById("documento"), hint: document.getElementById("documentoHint"),
+                validar: (v) => /^[0-9]{6,12}$/.test(v.trim()),
+                mensaje: "El documento debe tener solo números (6 a 12 dígitos)." },
+            telefono: { el: document.getElementById("telefono"), hint: document.getElementById("telefonoHint"),
+                validar: (v) => /^[0-9]{7,10}$/.test(v.trim()),
+                mensaje: "El teléfono debe tener solo números (7 a 10 dígitos)." },
+            correo: { el: document.getElementById("correo"), hint: document.getElementById("correoHint"),
+                validar: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
+                mensaje: "Escribe un correo electrónico válido (ej. nombre@correo.com)." },
+            usuario: { el: document.getElementById("usuario"), hint: document.getElementById("usuarioHint"),
+                validar: (v) => v.trim().length >= 4,
+                mensaje: "Escribe tu nombre completo (mínimo 4 caracteres)." },
+        };
+
+        /* Conflictos que ya devolvió el servidor (p. ej. correo repetido). Mientras el usuario
+           no cambie ese valor, el campo sigue marcado y no se reenvía el mismo dato. */
+        const CONFLICTOS = {};
+        function validarCampo(clave) {
+            const { el, hint, validar, mensaje } = HINTS[clave];
+            const valor = el.value;
+            const vacio = valor.trim() === "";
+            const conflicto = CONFLICTOS[clave];
+            const enConflicto = !vacio && !!conflicto && conflicto.valor === valor.trim().toLowerCase();
+            const valido = !vacio && validar(valor) && !enConflicto;
+
+            hint.textContent = vacio ? "" : (enConflicto ? conflicto.mensaje : (valido ? "" : mensaje));
+            el.classList.toggle("is-invalid", !vacio && !valido);
+            return valido;
+        }
+
+        /* Aviso visible bajo el formulario. Se arma con nodos de texto (no innerHTML)
+           para que nada que venga del servidor pueda inyectar HTML. */
+        function mostrarErrorRegistro(titulo, texto, enlaces = []) {
+            const caja = document.getElementById("registroError");
+            caja.replaceChildren();
+            const t = document.createElement("strong");
+            t.textContent = titulo;
+            caja.appendChild(t);
+            caja.appendChild(document.createTextNode(texto));
+            if (enlaces.length) {
+                const linea = document.createElement("div");
+                linea.style.marginTop = "6px";
+                enlaces.forEach(({ href, etiqueta }) => {
+                    const a = document.createElement("a");
+                    a.href = href;
+                    a.textContent = etiqueta;
+                    linea.appendChild(a);
+                });
+                caja.appendChild(linea);
+            }
+            caja.hidden = false;
+        }
+        function ocultarErrorRegistro() {
+            document.getElementById("registroError").hidden = true;
+        }
+        // El aviso desaparece en cuanto la persona vuelve a editar el formulario
+        // (el campo en conflicto conserva su propio mensaje hasta que cambie el valor).
+        document.querySelector(".register-box").addEventListener("input", ocultarErrorRegistro);
+
+        /* Revisa TODO el formulario (campos + rol + contraseñas) y
+           habilita o deshabilita el botón "Crear mi cuenta" en vivo. */
+        function actualizarEstadoFormulario() {
+            const documentoOk = validarCampo("documento");
+            const telefonoOk = validarCampo("telefono");
+            const correoOk = validarCampo("correo");
+            const usuarioOk = validarCampo("usuario");
+            const rolOk = document.getElementById("rol").value !== "";
+            const passwordOk = actualizarChecklistPassword();
+            const coincideOk = actualizarCoincidencia();
+
+            const formularioValido = documentoOk && telefonoOk && correoOk &&
+                usuarioOk && rolOk && passwordOk && coincideOk;
+
+            document.getElementById("btnRegistrar").disabled = !formularioValido;
+            return formularioValido;
+        }
+
+        // Cada campo se valida mientras el usuario escribe/selecciona.
+        ["documento", "telefono", "correo", "usuario"].forEach((id) => {
+            document.getElementById(id).addEventListener("input", actualizarEstadoFormulario);
+        });
+        document.getElementById("password").addEventListener("input", actualizarEstadoFormulario);
+        document.getElementById("password2").addEventListener("input", actualizarEstadoFormulario);
+
+        async function registrar() {
+
+            if (!actualizarEstadoFormulario()) {
+                alert("⚠️ Revisa los campos marcados: hay datos incompletos o con un formato inválido.");
+                return;
+            }
+
+            const documento = document.getElementById("documento").value.trim();
+            const telefono = document.getElementById("telefono").value.trim();
+            const correo = document.getElementById("correo").value.trim();
+            const rol = document.getElementById("rol").value;
+            const usuario = document.getElementById("usuario").value.trim();
+            const password = document.getElementById("password").value;
+
+            const boton = document.getElementById("btnRegistrar");
+            boton.disabled = true;
+            boton.textContent = "Creando cuenta...";
+
+            try {
+                // Registro público en /api/auth/registro: el servidor solo acepta cuentas de Cliente.
+                await api.post(`${ENDPOINTS.auth}/registro`, {
+                    nombreUsuario: usuario,
+                    contrasena: password,
+                    email: correo,
+                    identificacion: documento,
+                    telefono: telefono,
+                    rol: "Cliente",
+                });
+
+                alert("✅ Cuenta creada con éxito. Ahora inicia sesión.");
+                window.location.href = "login.html";
+
+            } catch (err) {
+                boton.textContent = "Crear mi cuenta";
+
+                // api-config.js ya tradujo el error: err.message es un texto legible y
+                // err.campo dice qué campo del backend chocó ("email", "identificacion").
+                const campoFormulario = { email: "correo", identificacion: "documento" }[err.campo];
+
+                if (campoFormulario) {
+                    const input = document.getElementById(campoFormulario);
+                    CONFLICTOS[campoFormulario] = { valor: input.value.trim().toLowerCase(), mensaje: err.message };
+                    actualizarEstadoFormulario();          // marca el campo y bloquea reenviar el mismo dato
+                    const esCorreo = campoFormulario === "correo";
+                    mostrarErrorRegistro(
+                        esCorreo ? "Este correo ya está registrado." : "Este documento ya está registrado.",
+                        " Si ya tienes una cuenta, inicia sesión; si no, " + (esCorreo ? "usa otro correo electrónico." : "revisa que el número esté bien escrito."),
+                        [{ href: "login.html", etiqueta: "Iniciar sesión" }, { href: "recuperar-password.html", etiqueta: "Recuperar contraseña" }]
+                    );
+                    input.focus({ preventScroll: true });   // el foco va al campo a corregir, sin saltar la pantalla
+                    document.getElementById("registroError").scrollIntoView({ block: "nearest", behavior: "instant" });   // y el aviso queda a la vista (instantáneo: no compite con otros scrolls suaves)
+                } else {
+                    mostrarErrorRegistro("No se pudo completar el registro.", " " + err.message);
+                    boton.disabled = false;               // error no atribuible a un campo: permitir reintentar
+                }
+            }
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="softec-config.js" defer></script>
+    <script src="chatbot-widget.js" defer></script>
+</body>
+
+</html>

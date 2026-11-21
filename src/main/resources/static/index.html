@@ -4,104 +4,611 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOFTEC</title>
-    <style>
-        .logo {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 120px;
-        }
+    <title>SOFTEC | Software para la gestión del servicio técnico</title>
+    <meta name="description" content="SOFTEC organiza tu taller: equipos, clientes, soporte técnico y facturación en un solo lugar.">
+    <meta name="theme-color" content="#0A192F">
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            background: white;
-            width: 500px;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            border-top: 8px solid #e53935;
-        }
-
-        h1 {
-            color: #0b1f3a;
-            margin-bottom: 10px;
-        }
-
-        h2 {
-            color: #e53935;
-            font-size: 20px;
-            margin-bottom: 20px;
-        }
-
-        p {
-            color: #333;
-            margin-bottom: 30px;
-        }
-
-        .menu a {
-            display: block;
-            text-decoration: none;
-            background: #0b1f3a;
-            color: white;
-            padding: 14px;
-            margin: 12px 0;
-            border-radius: 10px;
-            border: 2px solid #e53935;
-            font-weight: bold;
-            font-size: 16px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-            transition: 0.3s;
-        }
-
-        .menu a:hover {
-            background: #e53935;
-            border-color: #0b1f3a;
-            transform: scale(1.03);
-        }
-
-        img {
-            background: url(logosoftec.jpg)no-repeat center;
-            width: 150px;
-
-
-        }
-
-        figcaption {
-            text-align: center;
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="landing.css" rel="stylesheet">
+    <link href="info-menu.css" rel="stylesheet">
+    <link href="carrusel.css" rel="stylesheet">
+    <link rel="icon" href="logo-softec.png">
 </head>
 
-<body>
-    <div class="container">
-        <header>
-            <h1>SOFTEC</h1>
-            <h2>Software para la Gestión del Servicio Técnico</h2>
-            <p>Bienvenido al sistema, selecciona una opción para continuar</p>
-        </header>
-        <img src="logosoftec.jpg" alt="Logo del software">
-        <figcaption>Logo del software </figcaption>
-        <nav class="menu">
-            <a href="Registro de usuario.html">Registro de usuario</a>
-            <a href="login.html">Login</a>
-            <a href="dashboard.html">Dashboard</a>
-            <a href="servicios.html">Módulo de Servicios</a>
-            <a href="facturacion.html">Módulo de Facturación</a>
+<body class="sf-body">
+
+    <!-- ============================================================
+         ÍCONOS (sprite SVG propio, sin librerías externas)
+         Uso: un svg con clase sf-icon que apunta al id del símbolo (ej. i-search)
+         ============================================================ -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <defs>
+            <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+            <symbol id="i-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></symbol>
+            <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+            <symbol id="i-tool" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+            <symbol id="i-invoice" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></symbol>
+            <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+            <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></symbol>
+            <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+            <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+            <symbol id="i-facebook" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></symbol>
+            <symbol id="i-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></symbol>
+            <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></symbol>
+            <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+            <symbol id="i-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></symbol>
+            <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+            <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+        </defs>
+    </svg>
+
+    <a class="sf-skip" href="#contenido">Saltar al contenido</a>
+
+    <!-- ============================================================
+         1. BARRA DE NAVEGACIÓN
+         ============================================================ -->
+    <header class="sf-header" id="sfHeader">
+        <nav class="sf-nav sf-container" aria-label="Principal">
+
+            <a class="sf-brand" href="index.html" aria-label="SOFTEC, ir al inicio">
+                <img src="logo-softec-mark.png" alt="">
+                <span>SOFTEC</span>
+            </a>
+
+            <button class="sf-toggle" id="sfToggle" type="button" aria-expanded="false" aria-controls="softecNav" aria-label="Abrir menú">
+                <span></span><span></span><span></span>
+            </button>
+
+            <div class="sf-menu" id="softecNav">
+                <ul class="sf-links">
+                    <li><a href="index.html" aria-current="page">Inicio</a></li>
+                    <li><a href="dashboard.html">Equipos</a></li>
+                    <li><a href="servicios.html">Servicios</a></li>
+                    <li><a href="clientes.html">Clientes</a></li>
+                    <li><a href="facturacion.html">Facturación</a></li>
+                    <li><a href="#nosotros">Nosotros</a></li>
+                    <li><a href="#soporte">Soporte</a></li>
+                </ul>
+                <div class="sf-actions">
+                    <a href="login.html" class="sf-btn sf-btn--outline">Ingresar</a>
+                    <a href="registro_usuario.html" class="sf-btn sf-btn--primary">Registrarme</a>
+                </div>
+            </div>
 
         </nav>
-    </div>
+    </header>
 
+    <main id="contenido" tabindex="-1">
+
+        <!-- ============================================================
+             2. HÉROE + BUSCADOR
+             ============================================================ -->
+        <section class="sf-hero sf-on-dark" aria-labelledby="heroTitulo">
+            <div class="sf-container sf-hero__inner">
+
+                <h1 class="sf-hero__title" id="heroTitulo">¿Qué servicio&nbsp;técnico necesitas hoy?</h1>
+                <p class="sf-hero__lead">
+                    Consulta un equipo, un cliente o una factura en segundos. Todo el proceso de tu taller,
+                    desde la recepción hasta la entrega, en un solo lugar.
+                </p>
+
+                <div class="sf-search__wrap">
+                    <form class="sf-search" id="helpSearchForm" role="search" autocomplete="off">
+                        <label class="sf-search__field" for="helpSearch">
+                            <svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+                            <span class="sf-sr-only">Buscar por cliente, equipo o servicio</span>
+                            <input type="text" id="helpSearch" inputmode="search" enterkeyhint="search"
+                                placeholder="Busca por cliente, equipo o servicio"
+                                data-placeholder-short="Cliente, equipo o servicio"
+                                role="combobox" aria-expanded="false" aria-controls="helpSuggestions" aria-autocomplete="list">
+                        </label>
+                        <button type="submit" class="sf-btn sf-btn--primary sf-search__btn" aria-label="Buscar">
+                            <svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg>
+                            <span class="sf-btn__text">Buscar</span>
+                        </button>
+                    </form>
+
+                    <ul class="sf-search__suggestions" id="helpSuggestions" role="listbox" hidden></ul>
+                </div>
+
+                <p class="sf-search__status" id="helpStatus" role="status" aria-live="polite"></p>
+            </div>
+
+            <div class="sf-hero__wave" aria-hidden="true">
+                <svg viewBox="0 0 1440 96" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0,52 C220,100 470,8 720,42 C980,78 1210,20 1440,56 L1440,96 L0,96 Z" fill="currentColor"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             CARRUSEL DE IMÁGENES (cambia solo; se puede pausar)
+             ============================================================ -->
+        <section class="sf-gallery" aria-labelledby="galeriaTitulo">
+            <div class="sf-container sf-gallery__grid">
+
+                <div class="sf-gallery__text">
+                    <span class="sf-eyebrow"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-tool"/></svg>Nuestro trabajo</span>
+                    <h2 id="galeriaTitulo">Tecnología y soporte técnico, de principio a fin</h2>
+                    <p>Diagnóstico, reparación y mantenimiento de equipos con el respaldo de un equipo técnico
+                        especializado y un proceso registrado paso a paso.</p>
+                </div>
+
+                <div class="sf-slider" id="sfSlider" role="group" aria-roledescription="carrusel" aria-label="Imágenes de nuestro trabajo" aria-live="off">
+                        <figure class="sf-slide is-active" aria-hidden="false">
+                            <img src="slide-diagnostico.jpg" alt="Técnico midiendo una tarjeta madre con un multímetro" decoding="async">
+                            <figcaption><strong>Diagnóstico de equipos</strong><span>Revisión técnica antes de cada reparación</span></figcaption>
+                        </figure>
+                        <figure class="sf-slide" aria-hidden="true">
+                            <img src="slide-infraestructura.jpg" alt="Ingeniero monitoreando una planta con brazos robóticos desde un portátil" loading="lazy" decoding="async">
+                            <figcaption><strong>Infraestructura y soporte</strong><span>Monitoreo y respaldo tecnológico para tu operación</span></figcaption>
+                        </figure>
+                        <figure class="sf-slide" aria-hidden="true">
+                            <img src="slide-reparacion.jpg" alt="Manos soldando componentes sobre una placa electrónica" loading="lazy" decoding="async">
+                            <figcaption><strong>Reparación de componentes</strong><span>Trabajo de precisión sobre cada equipo</span></figcaption>
+                        </figure>
+
+                    <button class="sf-slider__nav sf-slider__nav--prev" type="button" aria-label="Imagen anterior">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+                    </button>
+                    <button class="sf-slider__nav sf-slider__nav--next" type="button" aria-label="Imagen siguiente">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+                    </button>
+
+                    <div class="sf-slider__controls">
+                        <button class="sf-slider__dot is-active" type="button" aria-label="Ir a la imagen 1"></button>
+                        <button class="sf-slider__dot" type="button" aria-label="Ir a la imagen 2"></button>
+                        <button class="sf-slider__dot" type="button" aria-label="Ir a la imagen 3"></button>
+                        <button class="sf-slider__pause" type="button" aria-label="Pausar carrusel">
+                            <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="5" height="16" rx="1"/><rect x="14" y="4" width="5" height="16" rx="1"/></svg>
+                            <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                        </button>
+                    </div>
+
+                    <div class="sf-slider__bar" aria-hidden="true"><span></span></div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ============================================================
+             INFORMACIÓN DESPLEGABLE (menú hamburguesa)
+             Las secciones informativas se muestran de una en una
+             ============================================================ -->
+        <section class="sf-infomenu" id="sfInfoMenu" aria-label="Información de SOFTEC">
+            <div class="sf-container sf-infomenu__inner">
+                <button class="sf-infomenu__toggle" type="button" aria-expanded="false" aria-controls="sfInfoList">
+                    <span class="sf-infomenu__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+                    <span class="sf-infomenu__label">
+                        <strong>Información de SOFTEC</strong>
+                        <small>Despliega el menú y elige qué quieres conocer</small>
+                    </span>
+                    <span class="sf-infomenu__chev" aria-hidden="true"></span>
+                </button>
+                <ul class="sf-infomenu__list" id="sfInfoList" hidden>
+                    <li><button type="button" class="sf-infomenu__item" data-target='[aria-labelledby="procesoTitulo"]' aria-expanded="false">
+                        <span class="sf-infomenu__ico"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-bolt"/></svg></span>
+                        Cómo funciona
+                    </button></li>
+                    <li><button type="button" class="sf-infomenu__item" data-target='#nosotros' aria-expanded="false">
+                        <span class="sf-infomenu__ico"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-shield"/></svg></span>
+                        Quiénes somos
+                    </button></li>
+                    <li><button type="button" class="sf-infomenu__item" data-target='#centroAyuda' aria-expanded="false">
+                        <span class="sf-infomenu__ico"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-monitor"/></svg></span>
+                        Beneficios clave
+                    </button></li>
+                    <li><button type="button" class="sf-infomenu__item" data-target='[aria-labelledby="statsTitulo"]' aria-expanded="false">
+                        <span class="sf-infomenu__ico"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg></span>
+                        SOFTEC en números
+                    </button></li>
+                    <li><button type="button" class="sf-infomenu__item" data-target='#preguntasFrecuentes' aria-expanded="false">
+                        <span class="sf-infomenu__ico"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-chat"/></svg></span>
+                        Preguntas frecuentes
+                    </button></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             3. ¿CÓMO FUNCIONA SOFTEC?
+             ============================================================ -->
+        <section class="sf-section sf-process" aria-labelledby="procesoTitulo">
+            <div class="sf-container">
+
+                <div class="sf-section__head">
+                    <span class="sf-eyebrow"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-bolt"/></svg>Cómo funciona</span>
+                    <h2 id="procesoTitulo">De la recepción a la entrega, en cinco pasos</h2>
+                    <p>El mismo flujo que sigue tu taller, ahora registrado y visible en tiempo real para todo el equipo.</p>
+                </div>
+
+                <ol class="sf-process__grid">
+                    <li class="sf-process__step">
+                        <span class="sf-process__num">1</span>
+                        <span class="sf-process__icon"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-monitor"/></svg></span>
+                        <h3>Recepción del equipo</h3>
+                        <p>Se registra el equipo, el cliente y el problema reportado. El estado queda en «pendiente».</p>
+                    </li>
+                    <li class="sf-process__step">
+                        <span class="sf-process__num">2</span>
+                        <span class="sf-process__icon"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg></span>
+                        <h3>Diagnóstico</h3>
+                        <p>El técnico asignado revisa el equipo y registra la falla encontrada y la reparación necesaria.</p>
+                    </li>
+                    <li class="sf-process__step">
+                        <span class="sf-process__num">3</span>
+                        <span class="sf-process__icon"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-tool"/></svg></span>
+                        <h3>Reparación</h3>
+                        <p>El estado pasa a «en proceso» mientras se resuelve el problema, con la prioridad ya definida.</p>
+                    </li>
+                    <li class="sf-process__step">
+                        <span class="sf-process__num">4</span>
+                        <span class="sf-process__icon"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-shield"/></svg></span>
+                        <h3>Control de calidad</h3>
+                        <p>Se verifica que la reparación cumpla lo diagnosticado antes de marcar el equipo como «finalizado».</p>
+                    </li>
+                    <li class="sf-process__step">
+                        <span class="sf-process__num">5</span>
+                        <span class="sf-process__icon"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-invoice"/></svg></span>
+                        <h3>Facturación y entrega</h3>
+                        <p>La factura se genera a partir del servicio registrado y el equipo queda listo para su entrega.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             3.5 QUIÉNES SOMOS — Misión, visión y metodología corporativa
+             ============================================================ -->
+        <section class="sf-section sf-about" id="nosotros" aria-labelledby="nosotrosTitulo">
+            <div class="sf-container">
+
+                <div class="sf-section__head">
+                    <span class="sf-eyebrow"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-shield"/></svg>Quiénes somos</span>
+                    <h2 id="nosotrosTitulo">Experiencia en tecnología, al servicio de tu taller</h2>
+                    <p>SOFTEC nace de la unión entre experiencia técnica en soporte de equipos y desarrollo de
+                        software, para llevar la gestión de talleres tecnológicos a un estándar profesional.</p>
+                </div>
+
+                <div class="sf-about__grid">
+                    <article class="sf-about__card">
+                        <span class="sf-about__icon"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-bolt"/></svg></span>
+                        <h3>Misión</h3>
+                        <p>Ofrecer soluciones tecnológicas confiables de infraestructura, soporte técnico y
+                            software, que optimicen la operación de talleres y equipos de servicio técnico,
+                            garantizando trazabilidad, seguridad de la información y una atención ágil al cliente.</p>
+                    </article>
+
+                    <article class="sf-about__card">
+                        <span class="sf-about__icon"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-search"/></svg></span>
+                        <h3>Visión</h3>
+                        <p>Ser reconocidos como un referente en soluciones de gestión para el sector de
+                            infraestructura y soporte tecnológico, digitalizando procesos operativos y de
+                            facturación para que cada taller compita con estándares de nivel empresarial.</p>
+                    </article>
+
+                    <article class="sf-about__card">
+                        <span class="sf-about__icon"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-tool"/></svg></span>
+                        <h3>Experiencia en el sector</h3>
+                        <p>Nuestro equipo combina experiencia en infraestructura tecnológica, soporte técnico
+                            especializado y desarrollo de software a la medida, entendiendo de primera mano los
+                            retos diarios de un taller de servicio técnico.</p>
+                    </article>
+                </div>
+
+                <div class="sf-section__head sf-section__head--tight">
+                    <span class="sf-eyebrow"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg>Nuestra metodología</span>
+                    <h2>Cómo abordamos cada proyecto tecnológico</h2>
+                    <p>El mismo enfoque estratégico que aplicamos a nuestros propios clientes de infraestructura
+                        y software, y que sostiene la forma en que construimos SOFTEC.</p>
+                </div>
+
+                <ol class="sf-method__grid">
+                    <li class="sf-method__step">
+                        <span class="sf-method__num">01</span>
+                        <h3>Análisis</h3>
+                        <p>Levantamos los procesos actuales del taller o la organización: cómo entra un equipo,
+                            quién lo atiende y dónde se pierde tiempo o información.</p>
+                    </li>
+                    <li class="sf-method__step">
+                        <span class="sf-method__num">02</span>
+                        <h3>Diagnóstico</h3>
+                        <p>Identificamos brechas técnicas y operativas —infraestructura, soporte, datos— y
+                            priorizamos lo que tiene mayor impacto en el servicio al cliente.</p>
+                    </li>
+                    <li class="sf-method__step">
+                        <span class="sf-method__num">03</span>
+                        <h3>Diseño de la solución</h3>
+                        <p>Diseñamos la arquitectura de software y de infraestructura a la medida, alineada con
+                            los estándares de seguridad y escalabilidad del sector.</p>
+                    </li>
+                    <li class="sf-method__step">
+                        <span class="sf-method__num">04</span>
+                        <h3>Implementación estratégica</h3>
+                        <p>Desplegamos la solución de forma progresiva, con acompañamiento y soporte técnico
+                            continuo, para asegurar la adopción real por parte del equipo.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             4. VALOR DEL SISTEMA (bloque corporativo/informativo)
+             id="centroAyuda" se conserva como ancla para el buscador
+             ============================================================ -->
+        <section class="sf-section" id="centroAyuda" aria-labelledby="modulosTitulo">
+            <div class="sf-container">
+
+                <div class="sf-section__head">
+                    <span class="sf-eyebrow"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-shield"/></svg>Beneficios clave</span>
+                    <h2 id="modulosTitulo">Un solo sistema para todo el ciclo del&nbsp;taller</h2>
+                    <p>SOFTEC centraliza la información de equipos, clientes, soporte y facturación, para que tu equipo
+                        deje de trabajar con hojas de cálculo sueltas y datos repetidos.</p>
+                </div>
+
+                <div class="sf-features__grid">
+
+                    <article class="sf-feature">
+                        <span class="sf-feature__icon"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-monitor"/></svg></span>
+                        <h3>Trazabilidad total de equipos</h3>
+                        <p>Cada equipo queda registrado desde que ingresa al taller hasta que sale entregado, con su
+                            estado siempre visible —pendiente, en proceso o finalizado— y su historial completo.</p>
+                    </article>
+
+                    <article class="sf-feature">
+                        <span class="sf-feature__icon"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-users"/></svg></span>
+                        <h3>Control automatizado de clientes</h3>
+                        <p>Documento, teléfono, correo y dirección se registran una sola vez y quedan disponibles para
+                            todo el equipo, evitando datos duplicados o desactualizados.</p>
+                    </article>
+
+                    <article class="sf-feature">
+                        <span class="sf-feature__icon"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-bolt"/></svg></span>
+                        <h3>Optimización de tiempos</h3>
+                        <p>Responsable, prioridad y avance quedan definidos desde el primer momento, reduciendo los
+                            tiempos muertos entre la recepción del equipo y su reparación.</p>
+                    </article>
+
+                    <article class="sf-feature">
+                        <span class="sf-feature__icon"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-invoice"/></svg></span>
+                        <h3>Facturación integrada</h3>
+                        <p>El valor, la fecha y el estado de pago se generan a partir del servicio ya registrado, sin
+                            doble digitación ni descuadres entre soporte y cobro.</p>
+                    </article>
+
+                    <article class="sf-feature">
+                        <span class="sf-feature__icon"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-shield"/></svg></span>
+                        <h3>Seguridad de los datos</h3>
+                        <p>La información se guarda en una base de datos PostgreSQL con validaciones en el backend
+                            antes de cada registro, reduciendo errores y pérdidas de información.</p>
+                    </article>
+
+                    <article class="sf-feature">
+                        <span class="sf-feature__icon"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg></span>
+                        <h3>Reportes para decidir</h3>
+                        <p>Indicadores y gráficas del taller —equipos, clientes y servicios— listos para exportar y
+                            apoyar decisiones, sin armar el informe a mano.</p>
+                    </article>
+
+                </div>
+
+                <div class="sf-features__cta">
+                    <p>¿Ya tienes una cuenta?</p>
+                    <a class="sf-btn sf-btn--primary" href="login.html">Ingresar a la plataforma
+                        <svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             5. SOFTEC EN NÚMEROS
+             REEMPLAZAR: data-count trae valores de ejemplo. Cámbialos por
+             las cifras reales de tu operación.
+             ============================================================ -->
+        <section class="sf-stats sf-on-dark" aria-labelledby="statsTitulo">
+            <div class="sf-container">
+                <h2 class="sf-stats__title" id="statsTitulo">SOFTEC en números</h2>
+                <p class="sf-stats__lead">Un vistazo al desempeño del taller desde que centralizamos la operación en un solo sistema.</p>
+
+                <dl class="sf-stats__grid">
+                    <div class="sf-stat">
+                        <dt>Equipos gestionados</dt>
+                        <dd><span class="sf-stat__num" data-count="500" data-prefix="+">+500</span></dd>
+                    </div>
+                    <div class="sf-stat">
+                        <dt>Técnicos activos</dt>
+                        <dd><span class="sf-stat__num" data-stat="tecnicos">—</span></dd>
+                    </div>
+                    <div class="sf-stat">
+                        <dt>Clientes satisfechos</dt>
+                        <dd><span class="sf-stat__num" data-stat="clientes" data-prefix="+">—</span></dd>
+                    </div>
+                    <div class="sf-stat">
+                        <dt>Procesos digitalizados</dt>
+                        <dd><span class="sf-stat__num" data-stat="servicios" data-suffix="">—</span></dd>
+                    </div>
+                    <div class="sf-stat">
+                        <dt>Tasa de eficiencia</dt>
+                        <dd><span class="sf-stat__num" data-stat="equipos" data-suffix="">—</span></dd>
+                    </div>
+                </dl>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             5.5 PREGUNTAS FRECUENTES (para el cliente final)
+             ============================================================ -->
+        <section class="sf-section sf-faq" id="preguntasFrecuentes" aria-labelledby="faqTitulo">
+            <div class="sf-container">
+
+                <div class="sf-section__head">
+                    <span class="sf-eyebrow"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-chat"/></svg>Preguntas frecuentes</span>
+                    <h2 id="faqTitulo">Resolvemos tus dudas más comunes</h2>
+                    <p>Si no encuentras lo que buscas aquí, nuestro asistente virtual (esquina inferior derecha) o
+                        nuestro equipo de soporte están listos para ayudarte.</p>
+                </div>
+
+                <div class="sf-faq__list">
+                    <details class="sf-faq__item">
+                        <summary>¿Cómo consulto el estado de mi equipo en reparación?
+                            <span class="sf-faq__plus" aria-hidden="true"></span>
+                        </summary>
+                        <p>Ingresa a la plataforma con la cuenta registrada al dejar tu equipo y revisa su estado:
+                            pendiente, en proceso o finalizado. También puedes preguntarle directamente a nuestro
+                            asistente virtual o escribirnos a soporte@softec.com.</p>
+                    </details>
+
+                    <details class="sf-faq__item">
+                        <summary>¿Qué servicios ofrece SOFTEC?
+                            <span class="sf-faq__plus" aria-hidden="true"></span>
+                        </summary>
+                        <p>Ofrecemos diagnóstico, reparación, mantenimiento e instalación de equipos. Cuéntanos qué
+                            le pasa al tuyo y te orientamos sobre el servicio más adecuado.</p>
+                    </details>
+
+                    <details class="sf-faq__item">
+                        <summary>¿Cómo solicito un servicio técnico?
+                            <span class="sf-faq__plus" aria-hidden="true"></span>
+                        </summary>
+                        <p>Puedes contactarnos por correo, teléfono o de forma presencial en el taller. Registramos
+                            tu equipo, el problema reportado y te asignamos un técnico y una prioridad de atención.</p>
+                    </details>
+
+                    <details class="sf-faq__item">
+                        <summary>¿Cuánto tiempo tarda una reparación?
+                            <span class="sf-faq__plus" aria-hidden="true"></span>
+                        </summary>
+                        <p>El tiempo varía según el tipo de servicio y la disponibilidad del técnico. Puedes
+                            consultar el avance real de tu equipo en cualquier momento desde la plataforma.</p>
+                    </details>
+
+                    <details class="sf-faq__item">
+                        <summary>¿Cómo me pongo en contacto con soporte técnico?
+                            <span class="sf-faq__plus" aria-hidden="true"></span>
+                        </summary>
+                        <p>Escríbenos a soporte@softec.com o llámanos al +57 300 000 0000, de lunes a viernes de
+                            8:00 a. m. a 6:00 p. m. y sábados de 8:00 a. m. a 1:00 p. m.</p>
+                    </details>
+
+                    <details class="sf-faq__item">
+                        <summary>¿Mis datos personales están seguros?
+                            <span class="sf-faq__plus" aria-hidden="true"></span>
+                        </summary>
+                        <p>Sí. Tus datos se almacenan de forma segura y se tratan conforme a nuestra Política de
+                            tratamiento de datos, según la Ley 1581 de 2012.</p>
+                    </details>
+                </div>
+
+                <p class="sf-faq__cta">¿Tienes otra pregunta? <a href="#soporte">Contáctanos aquí</a> o usa el
+                    asistente virtual en la esquina inferior derecha.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ============================================================
+         6. FOOTER INSTITUCIONAL
+         REEMPLAZAR: teléfono de ejemplo y los enlaces legales (href="#")
+         ============================================================ -->
+    <footer class="sf-footer sf-on-dark">
+        <div class="sf-container sf-footer__grid">
+
+            <div>
+                <a class="sf-footer__logo" href="index.html" aria-label="SOFTEC, ir al inicio">
+                    <img src="logo-softec-full.png" alt="SOFTEC, software para la gestión del servicio técnico">
+                </a>
+                <p class="sf-footer__about">
+                    Sistema de gestión de servicio técnico: clientes, equipos, facturación y reportes en un solo lugar.
+                </p>
+                <ul class="sf-tech" aria-label="Tecnologías usadas en SOFTEC">
+                    <li>Java · Spring Boot</li>
+                    <li>PostgreSQL</li>
+                    <li>REST API</li>
+                    <li>Bootstrap 5</li>
+                </ul>
+                <div class="sf-social">
+                    <a href="#" aria-label="Facebook"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-facebook"/></svg></a>
+                    <a href="#" aria-label="Instagram"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-instagram"/></svg></a>
+                    <a href="#" aria-label="WhatsApp"><svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-chat"/></svg></a>
+                </div>
+            </div>
+
+            <div id="soporte">
+                <h3>Contacto y soporte</h3>
+                <ul class="sf-contact">
+                    <li>
+                        <svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>
+                        <a href="mailto:soporte@softec.com">soporte@softec.com</a>
+                    </li>
+                    <li>
+                        <svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>
+                        <a href="tel:+573000000000">+57 300 000 0000</a>
+                    </li>
+                    <li>
+                        <svg class="sf-icon" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg>
+                        <span class="sf-hours">
+                            <span><strong>Lunes a viernes</strong>8:00&nbsp;a.&nbsp;m. – 6:00&nbsp;p.&nbsp;m.</span>
+                            <span><strong>Sábados</strong>8:00&nbsp;a.&nbsp;m. – 1:00&nbsp;p.&nbsp;m.</span>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <h3>Enlaces rápidos</h3>
+                <ul class="sf-footer__links">
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="servicios.html">Servicios</a></li>
+                    <li><a href="clientes.html">Clientes</a></li>
+                    <li><a href="facturacion.html">Facturación</a></li>
+                    <li><a href="login.html">Ingresar</a></li>
+                    <li><a href="registro_usuario.html">Registrarme</a></li>
+                    <li><a href="recuperar-password.html">Olvidé mi contraseña</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3>Documentación y soporte</h3>
+                <ul class="sf-footer__links">
+                    <li><a href="#">Documentación de la API</a></li>
+                    <li><a href="#">Guía de inicio rápido</a></li>
+                    <li><a href="mailto:soporte@softec.com?subject=Reporte%20de%20problema">Reportar un problema</a></li>
+                    <li><a href="#">Estado del sistema</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3>Información legal</h3>
+                <ul class="sf-footer__links">
+                    <li><a href="#">Política de tratamiento de datos</a></li>
+                    <li><a href="#">Términos y condiciones</a></li>
+                    <li><a href="#">Política de cookies</a></li>
+                    <li><a href="#">Aviso legal</a></li>
+                </ul>
+                <p class="sf-legal-note">
+                    Los datos personales que registras en SOFTEC se tratan según nuestra Política de tratamiento
+                    de datos (Ley 1581 de 2012).
+                </p>
+            </div>
+
+        </div>
+
+        <div class="sf-footer__bottom">
+            <div class="sf-container">
+                <span>© 2026 <strong>SOFTEC</strong>. Todos los derechos reservados.</span>
+                <span>Software para la gestión del servicio técnico</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="softec-env.js"></script>
+    <script src="landing.js"></script>
+    <script src="info-menu.js"></script>
+    <script src="carrusel.js"></script>
+    <script src="softec-config.js" defer></script>
+    <script src="chatbot-widget.js" defer></script>
 </body>
 
 </html>

@@ -77,66 +77,17 @@ Las credenciales de demostración se encuentran documentadas en `sql/softec_demo
 
 ---
 
-## Configuración por entorno (actualizado)
+## Dirección del backend (actualizado)
 
-Las claves ya no están escritas en `application.properties`.
+La dirección del API ya no está escrita en cada archivo. Se define en `softec-env.js`:
 
-- **Desarrollo local:** no hay que hacer nada. Sin otro perfil se activa `dev` (`application-dev.properties`), que trae la clave de PostgreSQL y un secreto JWT **solo para trabajar en el computador**. Cambien la clave si usan otra en su PostgreSQL.
-- **Servidor real:** activar el perfil `prod` (`SPRING_PROFILES_ACTIVE=prod`) y definir las variables de entorno de `.env.example`:
+- En `localhost`, `127.0.0.1` o abriendo el archivo directamente usa `http://localhost:8081/api`.
+- En otro servidor usa el mismo host del frontend en el puerto `8081`.
+- Para usar otra dirección, definan `window.SOFTEC_API_BASE` en un `<script>` antes de cargar `softec-env.js`:
 
-| Variable | Para qué sirve |
-|---|---|
-| `SOFTEC_DB_PASSWORD` | Contraseña de PostgreSQL (obligatoria en `prod`) |
-| `SOFTEC_JWT_SECRET` | Secreto JWT en Base64, mínimo 256 bits. Se genera con `openssl rand -base64 32` (obligatoria en `prod`) |
-| `SOFTEC_CORS_ORIGINS` | Direcciones del frontend permitidas, separadas por coma |
-| `SOFTEC_DB_URL`, `SOFTEC_DB_USER`, `SOFTEC_PORT` | Opcionales |
-
-Si falta el secreto JWT o la contraseña en `prod`, la aplicación no arranca (a propósito).
-
-## Pruebas automatizadas
-
-Hay pruebas unitarias en `src/test` para la política de contraseñas, el limitador de intentos, los tokens JWT, la regla de facturas inmutables y el manejador de errores.
-
-```bash
-./mvnw test
+```html
+<script>window.SOFTEC_API_BASE = "https://api.mi-dominio.com/api";</script>
+<script src="softec-env.js"></script>
 ```
 
-## Docker
-
-```bash
-cp .env.example .env     # editar los valores
-docker compose up --build
-```
-
-Levanta PostgreSQL (con el esquema y los datos de demostración cargados en el orden correcto) y el backend en el puerto 8081.
-
-## Copias de seguridad
-
-```bash
-SOFTEC_DB_PASSWORD=su_clave ./scripts/backup.sh
-```
-
-Crea un `.sql.gz` en `backups/` y borra los de más de 14 días. La forma de restaurar y de programarlo con cron está en el encabezado del script.
-
-## Documentación de la API
-
-Todos los endpoints, con su rol requerido y la acción de auditoría, están en [`docs/API.md`](docs/API.md).
-
-## Validación de datos
-
-Login, registro y recuperación de contraseña validan los datos con Bean Validation (`@Valid`) antes de llegar a la lógica de negocio. Los errores se devuelven como `{"message": "..."}` con código 400. La consulta pública `GET /api/servicio-tecnico/buscar` está limitada a 30 peticiones por IP cada 15 minutos.
-
-## Limitaciones conocidas
-
-- El token del flujo de notificaciones en tiempo real (SSE) viaja en la URL, porque `EventSource` no permite cabeceras. Para quitarlo habría que cambiar el frontend a `fetch` con stream.
-- La búsqueda pública acepta número de orden **o** cédula por separado. Exigir las dos juntas sería más seguro, pero cambia cómo funciona el chatbot.
-- El contador de intentos fallidos vive en memoria: se reinicia con el servidor y no se comparte entre varias instancias.
-
-
-## Frontend integrado (Render)
-
-Las paginas HTML y las imagenes institucionales se encuentran en `src/main/resources/static`. Spring Boot las sirve desde el mismo dominio que la API: abre `/` para `index.html` y `/login.html` para el inicio de sesion. Los recursos estaticos son publicos; los endpoints `/api/**` conservan las reglas de autenticacion y autorizacion configuradas en Spring Security.
-
-**Alcance actual:** integrar los archivos permite servir el frontend y el backend desde una sola aplicacion y direccion. No convierte automaticamente todos los formularios y botones HTML en operaciones conectadas a la API. Es necesario revisar y conectar cada formulario/modulo con sus endpoints; las paginas `clientes.html` y `tecnicos.html` enlazadas desde el dashboard tampoco venian en el paquete de frontend recibido.
-
-Para Render, configura `SPRING_PROFILES_ACTIVE=prod`, `SOFTEC_DB_URL`, `SOFTEC_DB_USER`, `SOFTEC_DB_PASSWORD` y `SOFTEC_JWT_SECRET`. Render asigna `PORT` automaticamente y la aplicacion lo utiliza. El perfil `prod` desactiva la ejecucion automatica de `schema.sql`; crea/importa el esquema de PostgreSQL una sola vez antes de iniciar la aplicacion. No ejecutes el script SQL que contiene `DROP TABLE` sobre una base con datos que quieras conservar.
+Recuerden agregar la dirección del frontend en `SOFTEC_CORS_ORIGINS` del backend.

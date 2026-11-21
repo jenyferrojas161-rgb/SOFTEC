@@ -1,0 +1,480 @@
+/* ============================================================
+   SOFTEC — estilos compartidos de navegación
+   Inspirados en la barra de navegación de Betowa (SENA):
+   logo + marca a la izquierda, enlaces horizontales al centro,
+   botones tipo píldora a la derecha, línea de acento inferior.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    /* Paleta corporativa SOFTEC — azul profundo + rojo de acento */
+    --softec-navy: #0A192F;
+    --softec-navy-light: #1E3A8A;
+    --softec-red: #E63946;
+    --softec-red-dark: #C1121F;
+    --softec-teal: #1E3A8A;
+    --softec-teal-light: #3B82F6;
+    --softec-purple: #C1121F;
+    --softec-purple-light: #E63946;
+    --softec-green: #10B981;
+    --softec-slate: #64748B;
+    --softec-slate-100: #F1F5F9;
+    --softec-bg: #F4F6F9;
+
+    --softec-radius-sm: 10px;
+    --softec-radius: 14px;
+    --softec-radius-lg: 16px;
+    --softec-shadow: 0 4px 16px rgba(10, 25, 47, .06);
+    --softec-shadow-md: 0 10px 28px rgba(10, 25, 47, .10);
+    --softec-shadow-lg: 0 20px 45px rgba(10, 25, 47, .16);
+
+    --softec-gradient-hero: linear-gradient(120deg, var(--softec-navy) 0%, var(--softec-navy-light) 55%, var(--softec-teal-light) 100%);
+    --softec-gradient-cta: linear-gradient(120deg, var(--softec-navy) 0%, var(--softec-red) 130%);
+}
+
+* {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background: var(--softec-bg);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ---------- NAVBAR ---------- */
+.softec-navbar {
+    background: #ffffff;
+    border-bottom: 1px solid #e6e9f0;
+    box-shadow: 0 1px 0 rgba(10, 25, 47, .02), 0 8px 24px -12px rgba(10, 25, 47, .12);
+    padding: .6rem 0;
+}
+
+.softec-brand {
+    display: flex;
+    align-items: center;
+    gap: .65rem;
+    font-weight: 800;
+    color: var(--softec-navy) !important;
+    font-size: 1.3rem;
+    letter-spacing: .3px;
+}
+
+.softec-brand img {
+    height: 42px;
+    width: 42px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--softec-navy);
+    background: #fff;
+    padding: 2px;
+}
+
+.softec-links .nav-link {
+    position: relative;
+    color: var(--softec-navy);
+    font-weight: 600;
+    margin: 0 .35rem;
+    padding: .4rem .15rem !important;
+    border-bottom: 2px solid transparent;
+    transition: .2s ease;
+}
+
+.softec-links .nav-link:hover {
+    color: var(--softec-red);
+}
+
+.softec-links .nav-link.active {
+    color: var(--softec-red);
+    border-bottom-color: var(--softec-red);
+}
+
+.softec-user {
+    color: var(--softec-navy-light);
+    font-weight: 600;
+    font-size: .85rem;
+    background: #eef1f8;
+    padding: .45rem .9rem;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+/* ---------- TAMAÑO GENERAL DE BOTONES ----------
+   Regla de accesibilidad: toda la app usa botones con un área de clic
+   mínima de ~44px de alto (guía WCAG 2.5.5), tamaño de letra más grande
+   y padding generoso. Las clases específicas de abajo (softec-btn-*)
+   afinan el resto de cada variante sin perder este tamaño base. */
+.btn {
+    min-height: 44px;
+    padding: .62rem 1.4rem;
+    font-size: .97rem;
+    font-weight: 600;
+    border-radius: 10px;
+}
+
+.btn.btn-sm {
+    min-height: 36px;
+    padding: .4rem 1rem;
+    font-size: .85rem;
+}
+
+/* ---------- BOTONES PÍLDORA (estilo Ingresar / Registrarme de Betowa) ---------- */
+.btn.softec-btn-outline {
+    border: 2px solid var(--softec-navy);
+    color: var(--softec-navy);
+    border-radius: 999px;
+    padding: .6rem 1.5rem;
+    font-weight: 700;
+    background: transparent;
+    transition: .2s ease;
+    white-space: nowrap;
+}
+
+.btn.softec-btn-outline:hover {
+    background: var(--softec-navy);
+    color: #fff;
+}
+
+.btn.softec-btn-filled {
+    background: var(--softec-red);
+    color: #fff !important;
+    border-radius: 999px;
+    padding: .6rem 1.7rem;
+    font-weight: 700;
+    border: 2px solid transparent;
+    transition: .2s ease;
+    white-space: nowrap;
+    box-shadow: 0 8px 20px -4px rgba(230, 57, 70, .45);
+}
+
+.btn.softec-btn-filled:hover {
+    background: var(--softec-red-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 12px 26px -4px rgba(230, 57, 70, .55);
+    color: #fff !important;
+}
+
+/* ---------- Botones de acción reutilizables (Editar / Eliminar) ---------- */
+.btn.softec-btn-edit {
+    border: 2px solid var(--softec-teal);
+    color: var(--softec-teal);
+    background: transparent;
+    border-radius: 999px;
+    font-weight: 700;
+    padding: .42rem 1.05rem;
+    font-size: .85rem;
+    min-height: 38px;
+    transition: .2s ease;
+    white-space: nowrap;
+}
+
+.btn.softec-btn-edit:hover {
+    background: var(--softec-teal);
+    color: #fff;
+}
+
+.btn.softec-btn-delete {
+    border: 2px solid var(--softec-red);
+    color: var(--softec-red);
+    background: transparent;
+    border-radius: 999px;
+    font-weight: 700;
+    padding: .42rem 1.05rem;
+    font-size: .85rem;
+    min-height: 38px;
+    transition: .2s ease;
+    white-space: nowrap;
+}
+
+.btn.softec-btn-delete:hover {
+    background: var(--softec-red);
+    color: #fff;
+}
+
+/* ---------- Botón bloqueado por auditoría (facturas pendientes/parciales) ---------- */
+.btn.softec-btn-locked,
+.btn.softec-btn-locked:hover {
+    border-color: #94a3b8;
+    color: #64748B;
+    background: #F1F5F9;
+    cursor: not-allowed;
+    opacity: .85;
+}
+
+/* ---------- Contenedor centrado para pantallas tipo tarjeta (login, registro, etc.) ---------- */
+.softec-center-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 16px;
+    background: var(--softec-gradient-hero);
+}
+
+/* ---------- Área principal para pantallas internas (dashboard, servicios, etc.) ---------- */
+.softec-main {
+    flex: 1;
+    padding: 28px 25px 40px;
+}
+
+footer.softec-footer {
+    text-align: center;
+    padding: 16px;
+    font-size: 13px;
+    color: #8a93a3;
+    background: #fff;
+    border-top: 1px solid #e9ecef;
+}
+
+/* ---------- Overlay de modal reutilizable ---------- */
+.softec-modal-bg {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 25, 47, .6);
+    backdrop-filter: blur(2px);
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+    padding: 16px;
+}
+
+.softec-modal-box {
+    background: #fff;
+    padding: 26px;
+    border-radius: var(--softec-radius-lg);
+    width: 420px;
+    max-width: 100%;
+    box-shadow: var(--softec-shadow-lg);
+    border: 1px solid #eef1f6;
+}
+
+.softec-modal-box h5 {
+    color: var(--softec-navy);
+    font-weight: 800;
+    margin-bottom: 14px;
+}
+
+/* ---------- Badges de estado (disponibles en toda la app) ---------- */
+.softec-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .28rem .75rem;
+    border-radius: 999px;
+    font-size: .76rem;
+    font-weight: 700;
+    letter-spacing: .01em;
+    white-space: nowrap;
+    line-height: 1.3;
+}
+.softec-badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex: none;
+}
+.softec-badge--pendiente,
+.softec-badge--recibido        { background: #FEF3E2; color: #B45309; }
+.softec-badge--proceso,
+.softec-badge--diagnostico,
+.softec-badge--reparacion      { background: #FFF1F0; color: #C1121F; }
+.softec-badge--finalizado,
+.softec-badge--reparado,
+.softec-badge--entregado,
+.softec-badge--pagada          { background: #E7F8F0; color: #047857; }
+.softec-badge--sin-reparacion,
+.softec-badge--cancelada       { background: #F1F5F9; color: #475569; }
+.softec-badge--info            { background: #EAF1FE; color: #1E3A8A; }
+
+/* ---------- Tablas: filas alternadas sutiles y hover limpio ---------- */
+.table > tbody > tr:nth-of-type(odd) > * { background-color: rgba(241, 245, 249, .45); }
+.table > tbody > tr:hover > * { background-color: rgba(30, 58, 138, .05); }
+.table > thead.table-dark > tr > th {
+    background-color: var(--softec-navy);
+    border-color: var(--softec-navy);
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    font-weight: 700;
+}
+
+/* ---------- Tarjetas, contenedores y formularios: estilo corporativo ---------- */
+.card, .softec-modal-box, .form-control, .form-select {
+    border-radius: var(--softec-radius) !important;
+}
+
+.card {
+    border: 1px solid #eef1f6 !important;
+    box-shadow: var(--softec-shadow) !important;
+    transition: box-shadow .2s ease, transform .2s ease;
+}
+
+.card.shadow-sm {
+    box-shadow: var(--softec-shadow) !important;
+}
+
+.form-control, .form-select {
+    border-color: #dfe4ee;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--softec-teal-light);
+    box-shadow: 0 0 0 .2rem rgba(30, 58, 138, .12);
+}
+
+/* ---------- Botones inferiores de formularios y modales ----------
+   Fila de acciones (Cancelar / Guardar) al final de cada formulario o
+   modal: más separación entre botones, alineados a la derecha en
+   pantallas grandes y apilados con ancho completo en móvil. */
+.softec-modal-box .d-flex.gap-2,
+.softec-form-actions {
+    gap: 14px !important;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #eef1f6;
+}
+
+.softec-modal-box .btn,
+.softec-form-actions .btn {
+    border-radius: 999px;
+    font-weight: 700;
+}
+
+@media (max-width: 520px) {
+    .softec-modal-box .d-flex.gap-2,
+    .softec-form-actions {
+        flex-direction: column;
+    }
+}
+
+/* ---------- MENÚ HAMBURGUESA (páginas internas, Bootstrap) ----------
+   En escritorio la navbar se ve horizontal (navbar-expand-lg). Por
+   debajo de "lg" el botón de hamburguesa abre un panel desplegable:
+   aquí se le da fondo, sombra y separación entre enlaces para que en
+   móvil se vea como un menú propio y no como texto suelto. */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background: #ffffff;
+        margin-top: .75rem;
+        padding: 1rem 1.1rem 1.2rem;
+        border-radius: var(--softec-radius);
+        box-shadow: var(--softec-shadow-md);
+        border: 1px solid #eef1f6;
+    }
+
+    .softec-links {
+        width: 100%;
+    }
+
+    .softec-links .nav-item {
+        margin: .15rem 0;
+        text-align: center;
+    }
+
+    .softec-links .nav-link {
+        display: block;
+        padding: .6rem !important;
+        border-radius: 8px;
+    }
+
+    .softec-links .nav-link:hover,
+    .softec-links .nav-link.active {
+        background: var(--softec-slate-100);
+    }
+
+    .softec-navbar .d-flex.align-items-center.gap-2 {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+.navbar-toggler {
+    min-height: 44px;
+    min-width: 44px;
+    border-radius: 8px;
+}
+
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 .2rem rgba(30, 58, 138, .18);
+}
+
+/* ============================================================
+   SOFTEC — accesibilidad táctil y menú responsive
+   ============================================================ */
+.btn:not(.btn-sm),
+.softec-btn-outline,
+.softec-btn-filled,
+.btn-login,
+.navbar-toggler {
+    min-height: 48px;
+}
+
+.navbar-toggler {
+    min-width: 48px;
+    padding: .55rem .7rem;
+    border: 2px solid var(--softec-navy);
+    border-radius: 10px;
+}
+
+.navbar-toggler:focus {
+    box-shadow: 0 0 0 .2rem rgba(10, 25, 47, .16);
+}
+
+@media (max-width: 991.98px) {
+    .softec-navbar .navbar-collapse {
+        margin-top: .75rem;
+        padding: .75rem 0 1rem;
+        border-top: 1px solid #e6e9f0;
+    }
+
+    .softec-links {
+        width: 100%;
+        gap: .25rem;
+    }
+
+    .softec-links .nav-item,
+    .softec-links .nav-link {
+        width: 100%;
+    }
+
+    .softec-links .nav-link {
+        min-height: 48px;
+        display: flex;
+        align-items: center;
+        padding: .75rem 1rem !important;
+        border-radius: 10px;
+    }
+
+    .softec-links .nav-link:hover,
+    .softec-links .nav-link.active {
+        background: #f1f5f9;
+        border-bottom-color: transparent;
+    }
+
+    .softec-navbar .softec-btn-filled,
+    .softec-navbar .softec-btn-outline {
+        width: 100%;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .softec-main { padding: 20px 14px 32px; }
+    .softec-navbar { padding: .55rem 0; }
+    .softec-brand { font-size: 1.15rem; }
+}

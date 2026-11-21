@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOFTEC - Clientes</title>
+
+    <!-- SESIÓN: si no hay usuario logueado, esto redirige a login.html
+         ANTES de que se pinte el contenido (igual que Betowa). -->
+    <script src="softec-env.js"></script>
+    <script src="session.js"></script>
+    <script src="auth-guard.js"></script>
+    <script>softecRequireRole(["Administrador"]);</script>
+
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="nav.css" rel="stylesheet">
+    <link href="tablas.css" rel="stylesheet">
+    <link rel="icon" href="logo-softec.png">
+
+    <!-- JQUERY -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+        .btn-main {
+            background: var(--softec-navy);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 999px;
+            font-weight: 700;
+            transition: .2s ease;
+        }
+
+        .btn-main:hover {
+            background: var(--softec-red);
+            color: white;
+        }
+
+        table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .stat-card {
+            border-radius: 14px;
+            border-left: 5px solid var(--softec-navy);
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg softec-navbar sticky-top">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand softec-brand" href="index.html">
+                <img src="logo-softec.png" alt="SOFTEC">
+                <span>SOFTEC</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#softecNav"
+                aria-controls="softecNav" aria-expanded="false" aria-label="Abrir menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="softecNav">
+                <ul class="navbar-nav mx-auto softec-links">
+                    <li class="nav-item"><a class="nav-link" href="dashboard.html">Panel general</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="clientes.html">Clientes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tecnicos.html">Técnicos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="servicios.html">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="facturacion.html">Facturación</a></li>
+                    <li class="nav-item"><a class="nav-link" href="reportes.html">Reportes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="configuracion.html">Configuración</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                    <span class="softec-user" id="softecUserLabel">👤 Usuario</span>
+                    <a href="login.html" class="btn softec-btn-outline">Cerrar sesión</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN -->
+    <div class="softec-main">
+        <div class="container-fluid">
+
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                <div>
+                    <h2 class="mb-0" style="color:#0A192F;font-weight:800;">Clientes</h2>
+                    <p class="text-muted mb-0">Datos de las personas que traen sus equipos a reparar: quiénes son
+                        y cómo contactarlas.</p>
+                </div>
+                <button class="btn btn-main" onclick="abrirModalNuevo()">
+                    + Registrar cliente
+                </button>
+            </div>
+
+            <!-- TARJETAS RESUMEN -->
+            <div class="row g-3 text-center mb-3 dir-stats">
+                <div class="col-6 col-lg-3">
+                    <div class="card stat-card p-3 shadow-sm">
+                        <span class="dir-stat-label">👥 Total de clientes</span>
+                        <h4 id="totalClientes">0</h4>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <div class="card stat-card p-3 shadow-sm">
+                        <span class="dir-stat-label">💻 Equipos registrados</span>
+                        <h4 id="totalEquipos">—</h4>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <div class="card stat-card p-3 shadow-sm">
+                        <span class="dir-stat-label">🔧 Equipos en proceso</span>
+                        <h4 id="equiposActivos">—</h4>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <div class="card stat-card p-3 shadow-sm">
+                        <span class="dir-stat-label">🧾 Facturas por cobrar</span>
+                        <h4 id="facturasPorCobrar">—</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLA -->
+            <div class="dir-toolbar">
+                <label class="dir-search">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <span class="visually-hidden">Buscar cliente</span>
+                    <input type="search" class="form-control" id="buscar" placeholder="Buscar por nombre, documento, teléfono o correo" autocomplete="off">
+                </label>
+                <span class="dir-count" id="conteoResultados" aria-live="polite"></span>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped shadow-sm dir-table">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Documento</th>
+                            <th>Teléfono</th>
+                            <th>Email</th>
+                            <th>Equipos</th>
+                            <th>Facturación</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla"><tr><td colspan="7" class="text-muted">Cargando clientes…</td></tr></tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <footer class="softec-footer">
+        © 2026 SOFTEC - Todos los derechos reservados
+    </footer>
+
+    <!-- MODAL (se reutiliza para "Registrar" y "Editar") -->
+    <div class="softec-modal-bg" id="modal">
+
+        <div class="softec-modal-box">
+
+            <h5 id="modalClienteTitulo">Registrar cliente</h5>
+
+            <input autocomplete="off" class="form-control mb-2" id="nombre" placeholder="Nombre completo">
+            <input autocomplete="off" class="form-control mb-2" id="documento" placeholder="Documento de identidad">
+            <input autocomplete="off" class="form-control mb-2" id="telefono" placeholder="Teléfono">
+            <input autocomplete="off" class="form-control mb-2" id="email" type="email" placeholder="Correo electrónico">
+
+            <div class="d-flex gap-2">
+                <button class="btn btn-secondary w-100" type="button" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-primary w-100" id="btnGuardarCliente" onclick="save()">Guardar</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="api-config.js"></script>
+    <script src="softec-utils.js"></script>
+    <script src="softec-trazabilidad.js"></script>
+    <script>
+
+        /* ------------------------------------------------------------
+           Los datos de un cliente viven en VARIAS tablas:
+             clientes  -> id, idUsuario, nombreCliente
+             usuario   -> identificacion, telefono, email  (se une por idUsuario)
+             equipo    -> por idCliente
+             facturacion -> por idCliente
+           Aquí se unen en el navegador y se guardan en clientesCache.
+           ------------------------------------------------------------ */
+        let clientesCache = [];
+        let usuariosCache = [];
+        let editandoClienteId = null;
+
+        const EQUIPO_ACTIVO = ["Recibido", "En_Diagnostico", "En_Reparacion"];
+        const FACTURA_POR_COBRAR = ["Pendiente", "Parcial"];
+
+        /* MODAL */
+        function abrirModalNuevo() {
+            editandoClienteId = null;
+            $("#modalClienteTitulo").text("Registrar cliente");
+            $("#btnGuardarCliente").text("Guardar");
+            $("#nombre, #documento, #telefono, #email").val("");
+            $("#modal").css("display", "flex");
+            $("#nombre").trigger("focus");
+        }
+
+        function editarCliente(id) {
+            const c = clientesCache.find(c => c.id === id);
+            if (!c) return;
+
+            editandoClienteId = id;
+            $("#modalClienteTitulo").text("Editar cliente");
+            $("#btnGuardarCliente").text("Actualizar");
+
+            $("#nombre").val(c.nombre || "");
+            $("#documento").val(c.documento || "");
+            $("#telefono").val(c.telefono || "");
+            $("#email").val(c.email || "");
+
+            $("#modal").css("display", "flex");
+        }
+
+        function verHistorial(id) {
+            const x = clientesCache.find(x => x.id === id);
+            if (x) SoftecTraza.cliente(x);
+        }
+
+        function closeModal() {
+            $("#modal").css("display", "none");
+        }
+
+        /* GUARDAR
+           Crear:   POST /api/usuarios  ->  POST /api/clientes {idUsuario, nombreCliente}
+           Editar:  PUT  /api/usuarios/{idUsuario}  ->  PUT /api/clientes/{id} */
+        async function save() {
+
+            const nombre = $("#nombre").val().trim();
+            const documento = $("#documento").val().trim();
+            const telefono = $("#telefono").val().trim();
+            const email = $("#email").val().trim();
+
+            if (!nombre || !documento || !email) {
+                alert("Completa los campos obligatorios (nombre, documento y correo)");
+                return;
+            }
+            if (!SoftecUI.emailValido(email)) {
+                alert("El correo no tiene un formato válido.");
+                return;
+            }
+
+            const actual = editandoClienteId ? clientesCache.find(c => c.id === editandoClienteId) : null;
+            const aviso = SoftecUI.duplicado(usuariosCache, { documento, email, ignorarId: actual ? actual.idUsuario : null });
+            if (aviso) { alert(aviso); return; }
+
+            const boton = $("#btnGuardarCliente");
+            const textoOriginal = boton.text();
+            boton.prop("disabled", true).text(editandoClienteId ? "Actualizando..." : "Guardando...");
+
+            try {
+                if (actual) {
+                    // Se reenvía el usuario completo: el backend sobrescribe TODOS sus campos
+                    // (incluida la contraseña), así que hay que devolver los que no se editan.
+                    await api.put(`${ENDPOINTS.usuarios}/${actual.idUsuario}`, {
+                        ...actual.usuario, identificacion: documento, telefono, email
+                    });
+                    await api.put(`${ENDPOINTS.clientes}/${actual.id}`, {
+                        id: actual.id, idUsuario: actual.idUsuario, nombreCliente: nombre
+                    });
+                    closeModal();
+                } else {
+                    const clave = SoftecUI.claveTemporal();
+                    const usuario = await api.post(ENDPOINTS.usuarios, {
+                        identificacion: documento, nombreUsuario: nombre, telefono, email,
+                        contrasena: clave, tipoUsuario: "Cliente"
+                    });
+                    try {
+                        await api.post(ENDPOINTS.clientes, { idUsuario: usuario.id, nombreCliente: nombre });
+                    } catch (e) {
+                        await SoftecUI.borrarUsuarioSilencioso(usuario.id); // no dejar un usuario a medias
+                        throw e;
+                    }
+                    closeModal();
+                    alert(`Cliente registrado.\n\nContraseña temporal de acceso: ${clave}\n(Guárdala: no se vuelve a mostrar.)`);
+                }
+
+                await cargarClientes();
+
+            } catch (err) {
+                alert("No se pudo guardar el cliente.\n\n" + SoftecUI.mensajeError(err));
+            } finally {
+                boton.prop("disabled", false).text(textoOriginal);
+            }
+        }
+
+        /* ELIMINAR (DELETE /api/clientes/{id}) */
+        async function del(id) {
+            const c = clientesCache.find(c => c.id === id);
+            if (!c) return;
+
+            // La BD no deja borrar un cliente con equipos o facturas asociados
+            if (c.nEquipos > 0 || c.nFacturas > 0) {
+                alert(`No se puede eliminar a ${c.nombre}: tiene ${c.nEquipos || 0} equipo(s) y ${c.nFacturas || 0} factura(s) registrados.\n\nElimina o reasigna esos registros primero.`);
+                return;
+            }
+            if (!confirm(`¿Eliminar a ${c.nombre}? Esta acción no se puede deshacer.`)) return;
+
+            try {
+                await api.del(`${ENDPOINTS.clientes}/${id}`);
+                await SoftecUI.borrarUsuarioSilencioso(c.idUsuario);
+                await cargarClientes();
+            } catch (err) {
+                alert("No se pudo eliminar.\n\n" + SoftecUI.mensajeError(err));
+            }
+        }
+
+        /* PINTAR una fila */
+        function filaCliente(c) {
+            const { esc, celda, iniciales, avatarClase, dinero } = SoftecUI;
+
+            const tel = c.telefono ? `<a href="tel:${esc(c.telefono)}">${esc(c.telefono)}</a>` : celda("");
+            const mail = c.email ? `<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : celda("");
+
+            let equipos = '<span class="text-muted">—</span>';
+            if (c.nEquipos === 0) {
+                equipos = '<span class="text-muted">Sin equipos</span>';
+            } else if (c.nEquipos > 0) {
+                equipos = `<span class="dir-badge dir-badge--info">${c.nEquipos} equipo${c.nEquipos > 1 ? "s" : ""}</span>` +
+                    (c.nActivos > 0 ? `<span class="dir-sub">${c.nActivos} en proceso</span>` : "");
+            }
+
+            let factura = '<span class="text-muted">—</span>';
+            if (c.nFacturas === 0) {
+                factura = '<span class="text-muted">Sin facturas</span>';
+            } else if (c.nFacturas > 0) {
+                factura = `<strong>${dinero(c.facturado)}</strong>` +
+                    `<span class="dir-sub">${c.nFacturas} factura${c.nFacturas > 1 ? "s" : ""}` +
+                    (c.porCobrar > 0 ? ` · <span class="dir-badge dir-badge--warn">${c.porCobrar} por cobrar</span>` : "") +
+                    `</span>`;
+            }
+
+            return `
+                <tr>
+                    <td>
+                        <div class="dir-person">
+                            <span class="dir-avatar ${avatarClase(c.id)}">${esc(iniciales(c.nombre))}</span>
+                            <div><strong>${esc(c.nombre) || "Sin nombre"}</strong><small>Cliente #${c.id}</small></div>
+                        </div>
+                    </td>
+                    <td>${celda(c.documento)}</td>
+                    <td>${tel}</td>
+                    <td>${mail}</td>
+                    <td>${equipos}</td>
+                    <td>${factura}</td>
+                    <td>
+                        <button class="btn softec-btn-edit me-1" onclick="verHistorial(${c.id})">📋 Historial</button>
+                        <button class="btn softec-btn-edit me-1" onclick="editarCliente(${c.id})">✏ Editar</button>
+                        <button class="btn softec-btn-delete" onclick="del(${c.id})">🗑 Eliminar</button>
+                    </td>
+                </tr>`;
+        }
+
+        /* PINTAR la tabla (aplica el filtro del buscador) */
+        function pintarClientes() {
+            const t = $("#tabla");
+            const texto = $("#buscar").val() || "";
+            const q = SoftecUI.normalizar(texto);
+
+            const filas = q
+                ? clientesCache.filter(c => SoftecUI.normalizar([c.nombre, c.documento, c.telefono, c.email].join(" ")).includes(q))
+                : clientesCache;
+
+            if (clientesCache.length === 0) {
+                t.html(`<tr><td colspan="7" class="text-muted">Todavía no hay clientes registrados. Usa "Registrar cliente" para agregar el primero.</td></tr>`);
+            } else if (filas.length === 0) {
+                t.html(`<tr><td colspan="7" class="text-muted">Ningún cliente coincide con “${SoftecUI.esc(texto)}”.</td></tr>`);
+            } else {
+                t.html(filas.map(filaCliente).join(""));
+            }
+
+            $("#conteoResultados").text(clientesCache.length ? `Mostrando ${filas.length} de ${clientesCache.length}` : "");
+        }
+
+        /* LISTAR: une clientes + usuarios (+ equipos y facturas como información extra) */
+        async function cargarClientes() {
+            const t = $("#tabla");
+            try {
+                const [clientes, usuarios, equipos, facturas] = await Promise.all([
+                    api.get(ENDPOINTS.clientes),
+                    api.get(ENDPOINTS.usuarios),
+                    api.get(ENDPOINTS.equipos).catch(() => null),      // extra: si falla, se muestra "—"
+                    api.get(ENDPOINTS.facturacion).catch(() => null),  // extra: si falla, se muestra "—"
+                ]);
+
+                usuariosCache = usuarios;
+                const usuarioPorId = new Map(usuarios.map(u => [u.id, u]));
+
+                clientesCache = clientes.map((c) => {
+                    const u = usuarioPorId.get(c.idUsuario) || {};
+                    const mios = equipos ? equipos.filter(e => e.idCliente === c.id) : null;
+                    const facts = facturas ? facturas.filter(f => f.idCliente === c.id) : null;
+                    return {
+                        id: c.id,
+                        idUsuario: c.idUsuario,
+                        usuario: u,
+                        nombre: c.nombreCliente || u.nombreUsuario || "",
+                        documento: u.identificacion || "",
+                        telefono: u.telefono || "",
+                        email: u.email || "",
+                        nEquipos: mios ? mios.length : null,
+                        nActivos: mios ? mios.filter(e => EQUIPO_ACTIVO.includes(e.estadoEquipo)).length : null,
+                        nFacturas: facts ? facts.length : null,
+                        facturado: facts ? facts.filter(f => f.estadoPago !== "Anulado").reduce((a, f) => a + (Number(f.totalPagar) || 0), 0) : null,
+                        porCobrar: facts ? facts.filter(f => FACTURA_POR_COBRAR.includes(f.estadoPago)).length : null,
+                    };
+                }).sort((a, b) => a.nombre.localeCompare(b.nombre, "es"));
+
+                pintarClientes();
+
+                $("#totalClientes").text(clientesCache.length);
+                $("#totalEquipos").text(equipos ? equipos.length : "—");
+                $("#equiposActivos").text(equipos ? equipos.filter(e => EQUIPO_ACTIVO.includes(e.estadoEquipo)).length : "—");
+                $("#facturasPorCobrar").text(facturas ? facturas.filter(f => FACTURA_POR_COBRAR.includes(f.estadoPago)).length : "—");
+
+            } catch (err) {
+                t.html(`<tr><td colspan="7" class="text-danger">No se pudieron cargar los clientes: ${SoftecUI.esc(SoftecUI.mensajeError(err))}</td></tr>`);
+            }
+        }
+
+        $("#buscar").on("input", pintarClientes);
+        cargarClientes();
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="softec-config.js" defer></script>
+    <script src="chatbot-widget.js" defer></script>
+</body>
+
+</html>

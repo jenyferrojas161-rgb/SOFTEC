@@ -2,322 +2,616 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard SOFTEC</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOFTEC - Servicios</title>
+
+    <!-- SESIÓN: si no hay usuario logueado, esto redirige a login.html
+         ANTES de que se pinte el contenido (igual que Betowa). -->
+    <script src="softec-env.js"></script>
+    <script src="session.js"></script>
+    <script src="auth-guard.js"></script>
+    <script>softecRequireRole(["Administrador","Tecnico"]);</script>
+
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="nav.css" rel="stylesheet">
+    <link rel="icon" href="logo-softec.png">
+
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            display: flex;
-            background: #f4f6f8;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 250px;
-            height: 100vh;
-            background: #0b1f3a;
-            /* azul oscuro */
-            color: white;
-            padding: 20px;
-            position: fixed;
-        }
-
-        .sidebar h2 {
-            color: #e53935;
-            /* rojo */
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .sidebar ul {
-            list-style: none;
-        }
-
-        .sidebar ul li {
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .sidebar ul li:hover {
-            background: #e53935;
-        }
-
-        /* Main content */
-        .main {
-            margin-left: 250px;
-            padding: 30px;
-            width: calc(100% - 250px);
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            color: #0b1f3a;
-        }
-
-        .header button {
-            background: #e53935;
+        .btn-main {
+            background: var(--softec-navy);
             color: white;
             border: none;
             padding: 10px 18px;
-            border-radius: 8px;
-            cursor: pointer;
+            border-radius: 999px;
+            font-weight: 700;
+            transition: .2s ease;
         }
 
-        /* Cards */
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .card {
-            background: white;
-            padding: 20px;
-            border-left: 6px solid #e53935;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .card h3 {
-            color: #0b1f3a;
-            margin-bottom: 10px;
-        }
-
-        .card p {
-            font-size: 28px;
-            font-weight: bold;
-            color: #e53935;
-        }
-
-        /* Table */
-        .table-container {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        th,
-        td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background: #0b1f3a;
+        .btn-main:hover {
+            background: var(--softec-red);
             color: white;
         }
 
-        tr:hover {
-            background: #f9f9f9;
+        .card-box {
+            border-left: 5px solid var(--softec-red);
+            border-radius: 14px;
         }
     </style>
+
 </head>
 
 <body>
-    <div class="sidebar">
-        <h2>SOFTEC</h2>
-        <ul>
-            <li>📊 Dashboard</li>
-            <li>👥 Clientes</li>
-            <li>🛠 Servicios</li>
-            <li>👨‍🔧 Técnicos</li>
-            <li>💳 Facturación</li>
-            <li>📑 Reportes</li>
-            <li>⚙ Configuración</li>
-        </ul>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg softec-navbar sticky-top">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand softec-brand" href="index.html">
+                <img src="logo-softec.png" alt="SOFTEC">
+                <span>SOFTEC</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#softecNav"
+                aria-controls="softecNav" aria-expanded="false" aria-label="Abrir menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="softecNav">
+                <ul class="navbar-nav mx-auto softec-links">
+                    <li class="nav-item"><a class="nav-link" href="dashboard.html">Panel general</a></li>
+                    <li class="nav-item"><a class="nav-link" href="clientes.html">Clientes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="tecnicos.html">Técnicos</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="servicios.html">Servicios</a></li>
+                    <li class="nav-item"><a class="nav-link" href="facturacion.html">Facturación</a></li>
+                    <li class="nav-item"><a class="nav-link" href="reportes.html">Reportes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="configuracion.html">Configuración</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                    <span class="softec-user" id="softecUserLabel">👤 Usuario</span>
+                    <a href="login.html" class="btn softec-btn-outline">Cerrar sesión</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN -->
+    <div class="softec-main">
+        <div class="container-fluid">
+
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                <div>
+                    <h2 class="mb-0" style="color:#0A192F;font-weight:800;">Servicios</h2>
+                    <p class="text-muted mb-0">Registra y da seguimiento a cada solicitud de reparación, desde que
+                        llega hasta que se entrega. Cada movimiento queda en el historial.</p>
+                </div>
+                <button class="btn btn-main" id="btnNuevaSolicitud" onclick="abrirModalNuevoServicio()">+ Nueva solicitud</button>
+            </div>
+
+            <!-- CARDS -->
+            <div class="row mb-4">
+
+                <div class="col-md-3">
+                    <div class="card p-3 shadow-sm card-box">
+                        <h6>Pendientes</h6>
+                        <h3 class="text-danger" id="statPendientes">0</h3>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card p-3 shadow-sm card-box">
+                        <h6>En proceso</h6>
+                        <h3 class="text-danger" id="statProceso">0</h3>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card p-3 shadow-sm card-box">
+                        <h6>Finalizados</h6>
+                        <h3 class="text-danger" id="statFinalizados">0</h3>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="card p-3 shadow-sm card-box">
+                        <h6>Vencidos</h6>
+                        <h3 class="text-danger" id="statVencidos">0</h3>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- TABLA SERVICIOS -->
+            <div class="card p-3 shadow-sm">
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <h5 class="mb-0">Solicitudes de servicio</h5>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <input type="search" id="buscarServicio" class="form-control" style="min-width:240px" autocomplete="off" placeholder="Buscar por cliente, equipo, técnico o problema">
+                        <select id="filtroEstado" class="form-select" style="width:auto">
+                            <option value="">Todos los estados</option>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="En_Proceso">En proceso</option>
+                            <option value="Finalizado">Finalizado</option>
+                            <option value="Entregado">Entregado</option>
+                            <option value="Cancelado">Cancelado</option>
+                            <option value="__vencido">Vencidos</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-striped mt-2">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Equipo</th>
+                                <th>Técnico</th>
+                                <th>Problema reportado</th>
+                                <th>Prioridad</th>
+                                <th>Estado</th>
+                                <th>Tiempo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="tablaServicios">
+                            <tr><td colspan="9" class="text-muted">Cargando...</td></tr>
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
     </div>
 
-    <div class="main">
-        <div class="header">
-            <h1>Panel Principal</h1>
-            <button>+ Nuevo Servicio</button>
+    <!-- MODAL: NUEVA SOLICITUD (todo se escribe a mano: cliente + equipo + servicio) -->
+    <div class="softec-modal-bg" id="modalNuevo">
+        <div class="softec-modal-box" style="width:640px;max-height:90vh;overflow:auto">
+            <h5>Nueva solicitud de servicio</h5>
+            <form autocomplete="off" onsubmit="return false">
+
+                <div class="fw-bold small text-uppercase text-muted mb-1">1. Cliente</div>
+                <div class="btn-group w-100 mb-2" role="group">
+                    <input type="radio" class="btn-check" name="tipoCliente" id="tcNuevo" value="nuevo" checked onchange="cambiarTipoCliente()">
+                    <label class="btn btn-outline-secondary" for="tcNuevo">Cliente nuevo</label>
+                    <input type="radio" class="btn-check" name="tipoCliente" id="tcExistente" value="existente" onchange="cambiarTipoCliente()">
+                    <label class="btn btn-outline-secondary" for="tcExistente">Ya es cliente</label>
+                </div>
+
+                <div id="bloqueClienteNuevo">
+                    <input class="form-control mb-2" id="nvNombre" autocomplete="off" placeholder="Nombre completo del cliente">
+                    <div class="row g-2">
+                        <div class="col-6"><input class="form-control mb-2" id="nvDocumento" inputmode="numeric" maxlength="12" autocomplete="off" placeholder="Documento de identidad"></div>
+                        <div class="col-6"><input class="form-control mb-2" id="nvTelefono" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="Teléfono"></div>
+                    </div>
+                    <input class="form-control mb-2" id="nvEmail" type="email" autocomplete="off" placeholder="Correo electrónico (será su usuario de ingreso)">
+                    <div class="form-text mb-2">Si el documento ya existe, el sistema usa a ese mismo cliente en vez de duplicarlo.</div>
+                </div>
+
+                <div id="bloqueClienteExistente" class="d-none position-relative">
+                    <input class="form-control mb-2" id="nvBuscarCliente" autocomplete="off" placeholder="Escribe nombre, documento o correo para buscar…">
+                    <div id="nvSugerencias" class="list-group position-absolute w-100 shadow-sm" style="z-index:5;max-height:200px;overflow:auto"></div>
+                    <div id="nvClienteElegido" class="small mb-2"></div>
+                </div>
+
+                <div class="fw-bold small text-uppercase text-muted mb-1 mt-2">2. Equipo</div>
+                <div class="row g-2">
+                    <div class="col-6"><input class="form-control mb-2" id="nvEquipoTipo" list="tiposEquipo" autocomplete="off" placeholder="Tipo (ej. Portátil, PC, Impresora)"></div>
+                    <div class="col-6"><input class="form-control mb-2" id="nvEquipoMarca" autocomplete="off" placeholder="Marca"></div>
+                    <div class="col-6"><input class="form-control mb-2" id="nvEquipoModelo" autocomplete="off" placeholder="Modelo"></div>
+                    <div class="col-6"><input class="form-control mb-2" id="nvEquipoSerie" autocomplete="off" placeholder="Número de serie (opcional)"></div>
+                </div>
+                <datalist id="tiposEquipo">
+                    <option value="Portátil"><option value="PC de escritorio"><option value="All in One"><option value="Impresora"><option value="Celular"><option value="Tablet"><option value="Monitor"><option value="Router">
+                </datalist>
+
+                <div class="fw-bold small text-uppercase text-muted mb-1 mt-2">3. Servicio</div>
+                <div class="row g-2">
+                    <div class="col-6">
+                        <select class="form-select mb-2" id="nvTipoServicio">
+                            <option value="">Tipo de servicio...</option>
+                            <option>Mantenimiento</option><option>Reparación</option><option>Diagnóstico</option><option>Instalación</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <select class="form-select mb-2" id="nvPrioridad">
+                            <option>Baja</option><option selected>Media</option><option>Alta</option><option>Urgente</option>
+                        </select>
+                    </div>
+                </div>
+                <textarea class="form-control mb-2" id="nvProblema" rows="2" placeholder="Problema reportado por el cliente"></textarea>
+                <select class="form-select mb-3" id="nvTecnico"><option value="">Asignar técnico (opcional)…</option></select>
+
+                <div class="d-flex gap-2">
+                    <button class="btn btn-secondary w-100" type="button" onclick="cerrarModal('modalNuevo')">Cancelar</button>
+                    <button class="btn btn-primary w-100" id="btnCrearSolicitud" type="button" onclick="crearSolicitud()">Registrar solicitud</button>
+                </div>
+            </form>
         </div>
+    </div>
 
-        <div class="cards">
-            <div class="card">
-                <h3>Servicios Pendientes</h3>
-                <p>12</p>
+    <!-- MODAL: EDITAR (administración) -->
+    <div class="softec-modal-bg" id="modalEditar">
+        <div class="softec-modal-box" style="width:560px;max-height:90vh;overflow:auto">
+            <h5 id="edTitulo">Editar solicitud</h5>
+            <div class="small text-muted mb-2" id="edResumen"></div>
+            <div class="row g-2">
+                <div class="col-6">
+                    <label class="form-label small mb-0">Tipo de servicio</label>
+                    <select class="form-select mb-2" id="edTipo"><option>Mantenimiento</option><option>Reparación</option><option>Diagnóstico</option><option>Instalación</option></select>
+                </div>
+                <div class="col-6">
+                    <label class="form-label small mb-0">Prioridad</label>
+                    <select class="form-select mb-2" id="edPrioridad"><option>Baja</option><option>Media</option><option>Alta</option><option>Urgente</option></select>
+                </div>
             </div>
-            <div class="card">
-                <h3>En Proceso</h3>
-                <p>8</p>
-            </div>
-            <div class="card">
-                <h3>Finalizados</h3>
-                <p>25</p>
-            </div>
-            <div class="card">
-                <h3>Clientes</h3>
-                <p>40</p>
-            </div>
-        </div>
-
-        <div class="table-container">
-            <h2>Últimos Servicios</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Cliente</th>
-                        <th>Técnico</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>001</td>
-                        <td>Juan Pérez</td>
-                        <td>Carlos Gómez</td>
-                        <td>Pendiente</td>
-                    </tr>
-                    <tr>
-                        <td>002</td>
-                        <td>Ana Torres</td>
-                        <td>Laura Díaz</td>
-                        <td>En proceso</td>
-                    </tr>
-                    <tr>
-                        <td>003</td>
-                        <td>Pedro Ruiz</td>
-                        <td>Andrés León</td>
-                        <td>Finalizado</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="table-container" style="margin-top:30px;">
-                <h2>Módulo de Facturación</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>N° Factura</th>
-                            <th>Cliente</th>
-                            <th>Fecha</th>
-                            <th>Valor</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>FAC-001</td>
-                            <td>Juan Pérez</td>
-                            <td>07/04/2026</td>
-                            <td>$250.000</td>
-                            <td>Pagada</td>
-                        </tr>
-                        <tr>
-                            <td>FAC-002</td>
-                            <td>Ana Torres</td>
-                            <td>07/04/2026</td>
-                            <td>$180.000</td>
-                            <td>Pendiente</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <br>
-                <button
-                    style="background:#e53935;color:white;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;">Generar
-                    Factura</button>
-                <button
-                    style="background:#0b1f3a;color:white;border:none;padding:10px 18px;border-radius:8px;cursor:pointer; margin-left:10px;">Descargar
-                    PDF</button>
-            </div>
-
-            <div class="table-container" style="margin-top:30px;">
-                <h2 style="color:#0b1f3a;">Módulo de Servicios SOALTECH</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Servicio</th>
-                            <th>Cliente</th>
-                            <th>Técnico</th>
-                            <th>Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>S001</td>
-                            <td>Reparación de PC</td>
-                            <td>Juan Pérez</td>
-                            <td>Carlos Gómez</td>
-                            <td>Pendiente</td>
-                        </tr>
-                        <tr>
-                            <td>S002</td>
-                            <td>Instalación de cámaras</td>
-                            <td>Ana Torres</td>
-                            <td>Laura Díaz</td>
-                            <td>En proceso</td>
-                        </tr>
-                        <tr>
-                            <td>S003</td>
-                            <td>Software de facturación</td>
-                            <td>Pedro Ruiz</td>
-                            <td>Andrés León</td>
-                            <td>Finalizado</td>
-                        </tr>
-                        <tr>
-                            <td>S004</td>
-                            <td>Automatización con IA</td>
-                            <td>Empresa XYZ</td>
-                            <td>Equipo IA</td>
-                            <td>Activo</td>
-                        </tr>
-                        <tr>
-                            <td>S005</td>
-                            <td>Soporte remoto</td>
-                            <td>María López</td>
-                            <td>Sebastián Rojas</td>
-                            <td>Asignado</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <nav>
-                    <li><a href="Registro de usuario.html">Registro de usuario</a>
-                    </li><a href="login.html">Login</a>
-                </nav>
-                <br>
-                <button
-                    style="background:#e53935;color:white;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;">+
-                    Nuevo Servicio</button>
-                <button
-                    style="background:#0b1f3a;color:white;border:none;padding:10px 18px;border-radius:8px;cursor:pointer; margin-left:10px;">Asignar
-                    Técnico</button>
-                <button
-                    style="background:#e53935;color:white;border:none;padding:10px 18px;border-radius:8px;cursor:pointer; margin-left:10px;">Ver
-                    Historial</button>
+            <label class="form-label small mb-0">Problema reportado</label>
+            <textarea class="form-control mb-2" id="edProblema" rows="2"></textarea>
+            <label class="form-label small mb-0">Estado</label>
+            <select class="form-select mb-2" id="edEstado">
+                <option value="Pendiente">Pendiente</option><option value="En_Proceso">En proceso</option>
+                <option value="Finalizado">Finalizado</option><option value="Entregado">Entregado</option><option value="Cancelado">Cancelado</option>
+            </select>
+            <label class="form-label small mb-0">Técnico asignado</label>
+            <select class="form-select mb-3" id="edTecnico"><option value="">Sin asignar</option></select>
+            <div class="d-flex gap-2">
+                <button class="btn btn-secondary w-100" type="button" onclick="cerrarModal('modalEditar')">Cancelar</button>
+                <button class="btn btn-primary w-100" id="btnGuardarEdicion" type="button" onclick="guardarEdicion()">Actualizar</button>
             </div>
         </div>
-        <nav>
-            <a
-                href="https://www.soaltech.com.co/hardware-software-servicio-tecnico-marketing-especializado-inteligencia-artificial">Información
-                de servicios</a>
-        </nav>
+    </div>
+
+    <!-- MODAL: SEGUIMIENTO (técnico y administración) -->
+    <div class="softec-modal-bg" id="modalSeguimiento">
+        <div class="softec-modal-box" style="width:560px;max-height:90vh;overflow:auto">
+            <h5 id="sgTitulo">Registrar avance</h5>
+            <div class="small text-muted mb-2" id="sgResumen"></div>
+            <label class="form-label small mb-0">Estado del servicio</label>
+            <select class="form-select mb-2" id="sgEstado">
+                <option value="Pendiente">Pendiente</option><option value="En_Proceso">En proceso</option>
+                <option value="Finalizado">Finalizado</option><option value="Entregado">Entregado</option><option value="Cancelado">Cancelado</option>
+            </select>
+            <label class="form-label small mb-0">Diagnóstico realizado</label>
+            <textarea class="form-control mb-2" id="sgDiagnostico" rows="3" placeholder="Qué encontraste en el equipo (opcional)"></textarea>
+            <label class="form-label small mb-0">Nota del avance</label>
+            <textarea class="form-control mb-3" id="sgNota" rows="2" placeholder="Ej. Se cambió la pasta térmica y se instaló Windows"></textarea>
+            <div class="d-flex gap-2">
+                <button class="btn btn-secondary w-100" type="button" onclick="cerrarModal('modalSeguimiento')">Cancelar</button>
+                <button class="btn btn-primary w-100" id="btnGuardarSeguimiento" type="button" onclick="guardarSeguimiento()">Guardar avance</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="softec-footer">
+        © 2026 SOFTEC - Todos los derechos reservados
+    </footer>
+
+    <script src="api-config.js"></script>
+    <script src="softec-utils.js"></script>
+    <script src="softec-trazabilidad.js"></script>
+    <script src="softec-notificaciones.js"></script>
+    <script src="facturacion-auto.js"></script>
+    <script>
+        let equiposCache = [], clientesCache = [], usuariosCache = [], tecnicosCache = [];
+        let serviciosCache = [], asignacionesCache = [], filasCache = [];
+        let editandoId = null, seguimientoId = null, clienteElegido = null;
+
+        const rolActual = softecRol();
+        const esTecnico = rolActual === "Tecnico";
+        const { esc } = SoftecUI;
+        const $id = (x) => document.getElementById(x);
+        const abrirModal = (id) => { $id(id).style.display = "flex"; };
+        function cerrarModal(id) { $id(id).style.display = "none"; }
+
+        if (esTecnico) {
+            $id("btnNuevaSolicitud").style.display = "none";
+            document.querySelector("h2").textContent = "Mis servicios";
+        }
+
+        /* ---------- Datos de apoyo ---------- */
+        const textoEquipo = (eq) => eq ? [eq.tipoEquipo, eq.marca, eq.modelo].filter(Boolean).join(" ") + ` (#${eq.id})` : "—";
+        const nombreCliente = (eq) => { const c = clientesCache.find(c => c.id === (eq || {}).idCliente); return c ? c.nombreCliente : "—"; };
+        const nombreTecnico = (idTecnico) => {
+            const t = tecnicosCache.find(t => t.id === idTecnico);
+            if (!t) return `Técnico #${idTecnico}`;
+            const u = usuariosCache.find(u => u.id === t.idUsuario);
+            return u ? u.nombreUsuario : `Técnico #${t.id}`;
+        };
+        const tecnicoDe = (idServicio) => asignacionesCache.find(a => a.idServicio === idServicio);
+        const dias = () => (window.SoftecConfig && SoftecConfig.dias) || 5;
+        const antiguedad = (s) => SoftecTraza.diasEntre(s.fechaIngresoEquipo, s.fechaEntregaEquipo);
+        const estaVencido = (s) => ["Pendiente", "En_Proceso"].includes(s.estadoServicio) && antiguedad(s) > dias();
+
+        async function cargarApoyo() {
+            const pedir = (u) => api.get(u).catch(() => []);
+            [equiposCache, clientesCache, usuariosCache, tecnicosCache, asignacionesCache] = await Promise.all([
+                pedir(ENDPOINTS.equipos), pedir(ENDPOINTS.clientes),
+                esTecnico ? [] : pedir(ENDPOINTS.usuarios), esTecnico ? [] : pedir(ENDPOINTS.tecnicos),
+                pedir(ENDPOINTS.servicioTecnico),
+            ]);
+            // Selects de técnico (solo administración)
+            if (!esTecnico) {
+                const opciones = tecnicosCache.map(t => `<option value="${t.id}">${esc(nombreTecnico(t.id))} · ${esc(SoftecUI.bonito(t.especialidad))} · ${esc(t.estadoDisponibilidad || "")}</option>`).join("");
+                $id("nvTecnico").insertAdjacentHTML("beforeend", opciones);
+                $id("edTecnico").insertAdjacentHTML("beforeend", opciones);
+            }
+        }
+
+        /* ---------- Nueva solicitud ---------- */
+        function abrirModalNuevoServicio() {
+            if (esTecnico) return;
+            clienteElegido = null;
+            ["nvNombre", "nvDocumento", "nvTelefono", "nvEmail", "nvBuscarCliente", "nvEquipoTipo", "nvEquipoMarca",
+                "nvEquipoModelo", "nvEquipoSerie", "nvProblema", "nvTipoServicio", "nvTecnico"].forEach(i => $id(i).value = "");
+            $id("nvPrioridad").value = "Media";
+            $id("tcNuevo").checked = true;
+            $id("nvClienteElegido").textContent = "";
+            $id("nvSugerencias").innerHTML = "";
+            cambiarTipoCliente();
+            abrirModal("modalNuevo");
+            $id("nvNombre").focus();
+        }
+        function cambiarTipoCliente() {
+            const nuevo = $id("tcNuevo").checked;
+            $id("bloqueClienteNuevo").classList.toggle("d-none", !nuevo);
+            $id("bloqueClienteExistente").classList.toggle("d-none", nuevo);
+        }
+        $id("nvBuscarCliente").addEventListener("input", () => {
+            clienteElegido = null;
+            $id("nvClienteElegido").textContent = "";
+            const q = SoftecUI.normalizar($id("nvBuscarCliente").value);
+            const caja = $id("nvSugerencias");
+            if (q.length < 2) { caja.innerHTML = ""; return; }
+            const hallados = clientesCache.map(c => {
+                const u = usuariosCache.find(u => u.id === c.idUsuario) || {};
+                return { c, u };
+            }).filter(({ c, u }) => SoftecUI.normalizar([c.nombreCliente, u.identificacion, u.email, u.telefono].join(" ")).includes(q)).slice(0, 8);
+            caja.innerHTML = hallados.length
+                ? hallados.map(({ c, u }) => `<button type="button" class="list-group-item list-group-item-action" data-id="${c.id}">
+                    <strong>${esc(c.nombreCliente)}</strong><div class="small text-muted">${esc(u.identificacion || "")} · ${esc(u.email || "")}</div></button>`).join("")
+                : '<div class="list-group-item text-muted">Sin coincidencias. Usa "Cliente nuevo".</div>';
+        });
+        $id("nvSugerencias").addEventListener("click", (e) => {
+            const b = e.target.closest("button[data-id]");
+            if (!b) return;
+            clienteElegido = Number(b.dataset.id);
+            const c = clientesCache.find(c => c.id === clienteElegido);
+            $id("nvClienteElegido").innerHTML = `✅ Cliente elegido: <strong>${esc(c.nombreCliente)}</strong>`;
+            $id("nvBuscarCliente").value = c.nombreCliente;
+            $id("nvSugerencias").innerHTML = "";
+        });
+
+        async function crearSolicitud() {
+            const nuevo = $id("tcNuevo").checked;
+            const v = (i) => $id(i).value.trim();
+            if (nuevo) {
+                if (!v("nvNombre")) return alert("Escribe el nombre del cliente.");
+                if (!/^[0-9]{6,12}$/.test(v("nvDocumento"))) return alert("El documento debe tener solo números (6 a 12 dígitos).");
+                if (v("nvTelefono") && !/^[0-9]{7,10}$/.test(v("nvTelefono"))) return alert("El teléfono debe tener solo números (7 a 10 dígitos).");
+                if (!SoftecUI.emailValido(v("nvEmail"))) return alert("Escribe un correo electrónico válido para el cliente.");
+            } else if (!clienteElegido) {
+                return alert("Busca y elige al cliente de la lista, o usa \"Cliente nuevo\".");
+            }
+            if (!v("nvEquipoTipo")) return alert("Escribe el tipo de equipo.");
+            if (!v("nvTipoServicio")) return alert("Selecciona el tipo de servicio.");
+            if (!v("nvProblema")) return alert("Describe el problema reportado.");
+
+            const payload = {
+                idCliente: nuevo ? null : clienteElegido,
+                clienteNombre: v("nvNombre"), clienteDocumento: v("nvDocumento"),
+                clienteTelefono: v("nvTelefono"), clienteEmail: v("nvEmail"),
+                equipoTipo: v("nvEquipoTipo"), equipoMarca: v("nvEquipoMarca"),
+                equipoModelo: v("nvEquipoModelo"), equipoSerie: v("nvEquipoSerie"),
+                tipoServicio: v("nvTipoServicio"), problema: v("nvProblema"),
+                prioridad: v("nvPrioridad"), idTecnico: v("nvTecnico") ? Number(v("nvTecnico")) : null,
+            };
+            const boton = $id("btnCrearSolicitud");
+            boton.disabled = true; boton.textContent = "Registrando...";
+            try {
+                const r = await api.post(`${ENDPOINTS.servicios}/solicitud`, payload);
+                cerrarModal("modalNuevo");
+                await recargar();
+                if (r.clienteNuevo && r.claveTemporal) {
+                    alert(`Solicitud #${r.servicio.id} registrada.\n\nSe creó la cuenta del cliente:\nUsuario (correo): ${payload.clienteEmail}\nContraseña temporal: ${r.claveTemporal}\n\n(Entrégasela: no se vuelve a mostrar.)`);
+                } else {
+                    SoftecNotify.mostrar(`Solicitud #${r.servicio.id} registrada.`, "exito");
+                }
+            } catch (err) {
+                alert("No se pudo registrar la solicitud.\n\n" + SoftecUI.mensajeError(err));
+            } finally {
+                boton.disabled = false; boton.textContent = "Registrar solicitud";
+            }
+        }
+
+        /* ---------- Editar (administración) ---------- */
+        function editarServicio(id) {
+            const s = serviciosCache.find(x => x.id === id);
+            if (!s) return;
+            editandoId = id;
+            const eq = equiposCache.find(e => e.id === s.idEquipo);
+            $id("edTitulo").textContent = `Editar solicitud #${id}`;
+            $id("edResumen").textContent = `${nombreCliente(eq)} · ${textoEquipo(eq)}`;
+            $id("edTipo").value = s.tipoServicio || "Mantenimiento";
+            $id("edPrioridad").value = s.prioridad || "Media";
+            $id("edProblema").value = s.problemaReportado || "";
+            $id("edEstado").value = s.estadoServicio || "Pendiente";
+            const a = tecnicoDe(id);
+            $id("edTecnico").value = a ? String(a.idTecnico) : "";
+            abrirModal("modalEditar");
+        }
+        async function guardarEdicion() {
+            const s = serviciosCache.find(x => x.id === editandoId);
+            if (!s) return;
+            if (!$id("edProblema").value.trim()) return alert("Describe el problema reportado.");
+            const estado = $id("edEstado").value;
+            const payload = { ...s, tipoServicio: $id("edTipo").value, prioridad: $id("edPrioridad").value,
+                problemaReportado: $id("edProblema").value.trim(), estadoServicio: estado };
+            const boton = $id("btnGuardarEdicion");
+            boton.disabled = true; boton.textContent = "Actualizando...";
+            try {
+                const actualizado = await api.put(`${ENDPOINTS.servicios}/${editandoId}`, payload);
+                // Técnico: si cambió, se quita la asignación anterior y se crea la nueva
+                const nuevoTec = $id("edTecnico").value ? Number($id("edTecnico").value) : null;
+                const previo = tecnicoDe(editandoId);
+                if ((previo ? previo.idTecnico : null) !== nuevoTec) {
+                    if (previo) await api.del(`${ENDPOINTS.servicioTecnico}/${editandoId}/${previo.idTecnico}`);
+                    if (nuevoTec) await api.post(ENDPOINTS.servicioTecnico, { idServicio: editandoId, idTecnico: nuevoTec });
+                }
+                cerrarModal("modalEditar");
+                await recargar();
+                await facturarSiCorresponde({ ...s, ...actualizado });
+            } catch (err) {
+                alert("No se pudo actualizar el servicio.\n\n" + SoftecUI.mensajeError(err));
+            } finally {
+                boton.disabled = false; boton.textContent = "Actualizar";
+            }
+        }
+
+        /* ---------- Seguimiento (técnico / administración) ---------- */
+        function abrirSeguimiento(id) {
+            const s = serviciosCache.find(x => x.id === id);
+            if (!s) return;
+            seguimientoId = id;
+            const eq = equiposCache.find(e => e.id === s.idEquipo);
+            $id("sgTitulo").textContent = `Registrar avance — solicitud #${id}`;
+            $id("sgResumen").innerHTML = `<strong>${esc(textoEquipo(eq))}</strong> · ${esc(nombreCliente(eq))}<br>Problema: ${esc(s.problemaReportado || "—")}`;
+            $id("sgEstado").value = s.estadoServicio || "Pendiente";
+            $id("sgDiagnostico").value = s.diagnosticoRealizado || "";
+            $id("sgNota").value = "";
+            abrirModal("modalSeguimiento");
+        }
+        async function guardarSeguimiento() {
+            const s = serviciosCache.find(x => x.id === seguimientoId);
+            if (!s) return;
+            const estado = $id("sgEstado").value;
+            const diagnostico = $id("sgDiagnostico").value.trim();
+            const nota = $id("sgNota").value.trim();
+            if (estado === s.estadoServicio && !nota && diagnostico === (s.diagnosticoRealizado || "")) {
+                return alert("No hay nada nuevo que guardar: cambia el estado, el diagnóstico o escribe una nota.");
+            }
+            const boton = $id("btnGuardarSeguimiento");
+            boton.disabled = true; boton.textContent = "Guardando...";
+            try {
+                const previoFinal = s.estadoServicio === "Finalizado";
+                const act = await api.put(`${ENDPOINTS.servicios}/${seguimientoId}/seguimiento`, { estado, diagnostico, nota });
+                cerrarModal("modalSeguimiento");
+                await recargar();
+                await facturarSiCorresponde({ ...s, ...act });
+                if (estado === "Finalizado" && !previoFinal) SoftecNotify.mostrar("Mantenimiento finalizado. Se notificó al cliente.", "exito");
+                else SoftecNotify.mostrar("Avance registrado.", "exito");
+            } catch (err) {
+                alert("No se pudo guardar el avance.\n\n" + SoftecUI.mensajeError(err));
+            } finally {
+                boton.disabled = false; boton.textContent = "Guardar avance";
+            }
+        }
+
+        /* Cuando un servicio queda Finalizado/Entregado se genera su factura sola (solo administración). */
+        async function facturarSiCorresponde(servicio) {
+            if (esTecnico || !servicio || !servicio.id || !SoftecFacturacion.esFacturable(servicio.estadoServicio)) return;
+            try {
+                const r = await SoftecFacturacion.facturarServicio(servicio, equiposCache);
+                if (!r.yaExistia) SoftecNotify.mostrar(`Factura ${r.factura.numeroFactura} generada automáticamente.`, "exito");
+            } catch (err) {
+                SoftecNotify.mostrar("El servicio quedó finalizado, pero no se pudo generar su factura: " + err.message, "error");
+            }
+        }
+
+        async function eliminarServicio(id) {
+            if (!confirm("¿Eliminar esta solicitud de servicio? Se borra también su historial.")) return;
+            try {
+                await api.del(`${ENDPOINTS.servicios}/${id}`);
+                await recargar();
+            } catch (err) {
+                alert("No se pudo eliminar.\n\n" + SoftecUI.mensajeError(err));
+            }
+        }
+
+        function verHistorial(id) {
+            const s = serviciosCache.find(x => x.id === id);
+            const eq = s ? equiposCache.find(e => e.id === s.idEquipo) : null;
+            const resumen = s ? `<div class="mb-3 small"><strong>${esc(textoEquipo(eq))}</strong> · ${esc(nombreCliente(eq))}<br>
+                Problema: ${esc(s.problemaReportado || "—")}<br>
+                ${s.diagnosticoRealizado ? "Diagnóstico: " + esc(s.diagnosticoRealizado) + "<br>" : ""}
+                Ingreso: ${SoftecTraza.soloFecha(s.fechaIngresoEquipo)}${s.fechaEntregaEquipo ? " · Entrega: " + SoftecTraza.soloFecha(s.fechaEntregaEquipo) : ""}</div>` : "";
+            SoftecTraza.servicio(id, resumen);
+        }
+
+        /* ---------- Tabla ---------- */
+        function pintar() {
+            const tabla = $id("tablaServicios");
+            const q = SoftecUI.normalizar($id("buscarServicio").value);
+            const filtro = $id("filtroEstado").value;
+            let pend = 0, proc = 0, fin = 0, venc = 0;
+            const filas = [];
+            serviciosCache.slice().sort((a, b) => b.id - a.id).forEach(s => {
+                if (s.estadoServicio === "Pendiente") pend++;
+                if (s.estadoServicio === "En_Proceso") proc++;
+                if (s.estadoServicio === "Finalizado") fin++;
+                const v = estaVencido(s); if (v) venc++;
+                const eq = equiposCache.find(e => e.id === s.idEquipo);
+                const a = tecnicoDe(s.id);
+                const tec = esTecnico ? "Yo" : (a ? nombreTecnico(a.idTecnico) : "");
+                const texto = SoftecUI.normalizar([s.id, nombreCliente(eq), textoEquipo(eq), tec, s.problemaReportado].join(" "));
+                if (q && !texto.includes(q)) return;
+                if (filtro === "__vencido" ? !v : (filtro && s.estadoServicio !== filtro)) return;
+                const d = antiguedad(s);
+                filas.push(`<tr>
+                    <td>${s.id}</td>
+                    <td>${esc(nombreCliente(eq))}</td>
+                    <td>${esc(textoEquipo(eq))}</td>
+                    <td>${tec ? esc(tec) : '<span class="text-warning fw-semibold">Sin asignar</span>'}</td>
+                    <td style="white-space:normal;min-width:180px">${esc(s.problemaReportado || "")}</td>
+                    <td>${SoftecUI.badgeEstado(s.prioridad || "Media")}</td>
+                    <td>${SoftecUI.badgeEstado(s.estadoServicio || "Pendiente")}${v ? ' <span class="softec-badge softec-badge--cancelada">Vencido</span>' : ""}</td>
+                    <td>${d === null ? "—" : d + " d"}</td>
+                    <td style="white-space:nowrap">
+                        <button class="btn softec-btn-edit me-1" onclick="abrirSeguimiento(${s.id})">🔧 Avance</button>
+                        <button class="btn softec-btn-edit me-1" onclick="verHistorial(${s.id})">📋 Historial</button>
+                        ${esTecnico ? "" : `<button class="btn softec-btn-edit me-1" onclick="editarServicio(${s.id})">✏ Editar</button>
+                        <button class="btn softec-btn-delete" onclick="eliminarServicio(${s.id})">🗑</button>`}
+                    </td>
+                </tr>`);
+            });
+            tabla.innerHTML = filas.length ? filas.join("")
+                : `<tr><td colspan="9" class="text-muted">${serviciosCache.length ? "Ningún servicio coincide con el filtro." : (esTecnico ? "No tienes solicitudes asignadas todavía." : "Todavía no hay solicitudes registradas.")}</td></tr>`;
+            $id("statPendientes").textContent = pend;
+            $id("statProceso").textContent = proc;
+            $id("statFinalizados").textContent = fin;
+            $id("statVencidos").textContent = venc;
+        }
+        $id("buscarServicio").addEventListener("input", pintar);
+        $id("filtroEstado").addEventListener("change", pintar);
+
+        async function recargar() {
+            const tabla = $id("tablaServicios");
+            try {
+                // El servidor ya filtra: un técnico recibe solo SUS servicios; un cliente, los suyos.
+                [serviciosCache, equiposCache, asignacionesCache, clientesCache] = await Promise.all([
+                    api.get(ENDPOINTS.servicios), api.get(ENDPOINTS.equipos),
+                    api.get(ENDPOINTS.servicioTecnico).catch(() => []), api.get(ENDPOINTS.clientes).catch(() => []),
+                ]);
+                pintar();
+            } catch (err) {
+                tabla.innerHTML = `<tr><td colspan="9" class="text-danger">No se pudieron cargar los servicios: ${esc(err.message)}</td></tr>`;
+            }
+        }
+
+        (async function init() {
+            await cargarApoyo();
+            await recargar();
+            // Si se llega desde el panel del técnico (?avance=ID) se abre directo el registro de avance
+            const avance = Number(new URLSearchParams(location.search).get("avance"));
+            if (avance) abrirSeguimiento(avance);
+            // El límite de días viene de Configuración: se repinta cuando llegue
+            if (window.SoftecConfig) SoftecConfig.cargar().then(pintar);
+        })();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="softec-config.js" defer></script>
+    <script src="chatbot-widget.js" defer></script>
 </body>
 
 </html>

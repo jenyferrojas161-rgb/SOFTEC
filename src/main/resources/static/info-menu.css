@@ -1,0 +1,72 @@
+/* ============================================================
+   SOFTEC — Información desplegable (index.html)
+   Archivo independiente: no modifica landing.css
+   ============================================================ */
+.sf-infomenu { background: var(--sf-bg); padding: 8px 0 36px; }
+.sf-infomenu__inner { max-width: 980px; margin-inline: auto; }
+
+/* ---------- Botón hamburguesa ---------- */
+.sf-infomenu__toggle {
+    width: 100%; display: flex; align-items: center; gap: 16px;
+    padding: 16px 22px; border: 1px solid var(--sf-line); border-radius: 16px;
+    background: var(--sf-surface); cursor: pointer; text-align: left;
+    font-family: var(--sf-font); color: var(--sf-navy-900);
+    box-shadow: 0 14px 30px -22px rgba(11, 31, 58, .35);
+    transition: border-color .2s, box-shadow .2s;
+}
+.sf-infomenu__toggle:hover { border-color: var(--sf-red-600); }
+.sf-infomenu.is-open .sf-infomenu__toggle { border-color: var(--sf-blue-400); }
+
+.sf-infomenu__bars { flex: none; display: flex; flex-direction: column; gap: 5px; width: 22px; }
+.sf-infomenu__bars span {
+    display: block; height: 2px; border-radius: 2px; background: var(--sf-red-600);
+    transition: transform .25s var(--sf-ease), opacity .2s;
+}
+.sf-infomenu.is-open .sf-infomenu__bars span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.sf-infomenu.is-open .sf-infomenu__bars span:nth-child(2) { opacity: 0; }
+.sf-infomenu.is-open .sf-infomenu__bars span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.sf-infomenu__label { flex: 1; }
+.sf-infomenu__label strong { display: block; font-size: 1.05rem; font-weight: 800; }
+.sf-infomenu__label small { display: block; margin-top: 2px; font-size: .86rem; color: var(--sf-muted); }
+
+.sf-infomenu__chev {
+    flex: none; width: 10px; height: 10px; margin-right: 4px;
+    border-right: 2px solid var(--sf-navy-900); border-bottom: 2px solid var(--sf-navy-900);
+    transform: rotate(45deg); transition: transform .25s var(--sf-ease);
+}
+.sf-infomenu.is-open .sf-infomenu__chev { transform: rotate(-135deg); }
+
+/* ---------- Lista de opciones ---------- */
+.sf-infomenu__list {
+    list-style: none; margin: 14px 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;
+}
+.sf-infomenu__list[hidden] { display: none; }
+.sf-infomenu__item {
+    width: 100%; height: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+    padding: 16px 14px; border: 1px solid var(--sf-line); border-radius: 14px;
+    background: var(--sf-surface); cursor: pointer; text-align: left;
+    font: 700 .92rem/1.25 var(--sf-font); color: var(--sf-navy-900);
+    transition: border-color .2s, transform .2s var(--sf-ease), box-shadow .2s;
+}
+.sf-infomenu__item:hover { border-color: var(--sf-red-600); transform: translateY(-2px); }
+.sf-infomenu__item .sf-infomenu__ico {
+    display: grid; place-items: center; width: 38px; height: 38px;
+    border-radius: 11px; background: #e8effb; color: var(--sf-navy-800);
+}
+.sf-infomenu__ico .sf-icon { width: 20px; height: 20px; }
+.sf-infomenu__item[aria-expanded="true"] {
+    border-color: var(--sf-red-600); box-shadow: 0 14px 28px -18px rgba(230, 57, 70, .55);
+}
+.sf-infomenu__item[aria-expanded="true"] .sf-infomenu__ico { background: var(--sf-red-600); color: #fff; }
+
+.sf-infomenu :focus-visible { outline: 3px solid var(--sf-blue-600); outline-offset: 3px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 960px) { .sf-infomenu__list { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 600px) {
+    .sf-infomenu__list { grid-template-columns: 1fr; gap: 10px; }
+    .sf-infomenu__item { flex-direction: row; align-items: center; gap: 14px; }
+    .sf-infomenu__toggle { padding: 14px 16px; }
+}
