@@ -5,7 +5,7 @@
    ============================================================ */
 (function () {
     const BASE = (typeof API_BASE !== "undefined") ? API_BASE : (window.SOFTEC_API_BASE || "http://localhost:8081/api");
-    const CACHE = "softec_cfg_cache";
+
     const LOGO_ORIGINAL = "logo-softec.png";
 
     function css() {
@@ -52,26 +52,29 @@
         window.SoftecConfig.dias = Number(cfg.dias) > 0 ? Number(cfg.dias) : 5;
     }
 
-    async function cargar(forzar) {
-        try {
-            const res = await fetch(BASE + "/configuracion/publica", { headers: { Accept: "application/json" } });
-            if (!res.ok) throw new Error("sin configuración");
-            const cfg = await res.json();
-            try { localStorage.setItem(CACHE, JSON.stringify(cfg)); } catch (_) { }
-            aplicar(cfg);
-            return cfg;
-        } catch (_) {
-            return window.SoftecConfig.datos;
-        }
+    function cargar() {
+        const cfg = {
+            nombre: "SOFTEC",
+            logo: LOGO_ORIGINAL,
+            modo: "Claro",
+            dias: 5
+        };
+
+        aplicar(cfg);
+        return cfg;
     }
+    window.SoftecConfig = {
+        datos: {
+            nombre: "SOFTEC",
+            logo: LOGO_ORIGINAL,
+            modo: "Claro",
+            dias: 5
+        },
+        dias: 5,
+        cargar,
+        aplicar
+    };
 
-    window.SoftecConfig = { datos: null, dias: 5, cargar, aplicar };
-
-    // 1) pinta rápido con lo último que se guardó (evita parpadeo claro/oscuro)
-    try {
-        const previo = JSON.parse(localStorage.getItem(CACHE) || "null");
-        if (previo) { window.SoftecConfig.datos = previo; window.SoftecConfig.dias = Number(previo.dias) || 5; document.documentElement.classList.toggle("softec-dark", previo.modo === "Oscuro"); css(); }
-    } catch (_) { }
 
     // 2) cuando la página ya existe, aplica y refresca desde el servidor
     document.addEventListener("DOMContentLoaded", () => {
